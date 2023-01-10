@@ -1,34 +1,45 @@
 /*Create Data Base schema for intelliQ*/
 
+DROP SCHEMA IF EXISTS intelliqDB;
+CREATE SCHEMA intelliqDB;
 
-CREATE DATABASE intelliqDB;
+USE intelliqDB;
+
+/*------------------------------------ ------------------------------------ ------------------------------------*/
+
+/* START OF TABLES HERE */
 
 
 /* create primary tables tables */
-
+DROP TABLE IF EXISTS Questionnaire;
 CREATE TABLE Questionnaire(
 	questionnaireID varchar(255) not null, /* Primary key */
 	questionnaireTitle varchar(255) not null, 
 	dateUpdated date null,
 	CONSTRAINT PK_Questionnaire PRIMARY KEY (questionnaireID)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+
+DROP TABLE IF EXISTS Keyword;
 CREATE TABLE Keyword(
-	keywordID int(10) not null, /*primary */
+	keywordID int(10) not null AUTO_INCREMENT, /*primary */
 	word varchar(255) not null ,
 	questionnaireID varchar(255) not null, /* foreign */
 	CONSTRAINT PK_Keyword PRIMARY KEY (keywordID),
 	CONSTRAINT FK_QuestionnaireID_Keyword FOREIGN KEY (questionnaireID) REFERENCES Questionnaire(questionnaireID)
-);
+)ENGINE=InnoDB AUTO_INCREMENT=20000 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+
+DROP TABLE IF EXISTS User;
 CREATE TABLE User(
-	userID int(10) not null, /*pk */
+	userID int(10) not null AUTO_INCREMENT, /*pk */
 	CONSTRAINT PK_User PRIMARY KEY (userID)
-);
+)ENGINE=InnoDB AUTO_INCREMENT=50001 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 /* create tables with derived keys */
 
 
+DROP TABLE IF EXISTS Question;
 CREATE TABLE Question (
     qID varchar(255) not null, /* primary key */
     questionnaireID varchar(255) not null, /* foreign key */
@@ -40,26 +51,31 @@ CREATE TABLE Question (
     CONSTRAINT PK_Question PRIMARY KEY (qID),
     CONSTRAINT FK_Questionnaire_ID_Question FOREIGN KEY (questionnaireID) REFERENCES Questionnaire(questionnaireID),
     CONSTRAINT FK_Keyword_ID FOREIGN KEY (keywordID) REFERENCES Keyword(keywordID)
-);  
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;  
 
-CREATE TABLE OPT(
+
+DROP TABLE IF EXISTS 'Option';
+CREATE TABLE 'Option'(
     optID varchar(255) not null, /* primary key */
     opttxt varchar(255) not null,
     qID varchar(255)  not null, /*foreign key */
-    nextqID varchar(255) not null, /*UNIIQUE???? */
+    nextqID varchar(255) not null, 
 
     CONSTRAINT PK_OPT PRIMARY KEY (optID),
     CONSTRAINT FK_QUestion_ID FOREIGN KEY (qID) REFERENCES Question(qID)
-);  
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci; 
 
+
+DROP TABLE IF EXISTS Anonymous;
 CREATE TABLE Anonymous(
 	userID int(10) not null, /* foreign + pk */
 
 	CONSTRAINT FK_USER_ID_ANONYMOUS FOREIGN KEY (userID) REFERENCES User(userID),
 	CONSTRAINT PK_ANONYMOUS PRIMARY KEY (userID)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci; 
 
-);
 
+DROP TABLE IF EXISTS Identified;
 CREATE TABLE Identified(
 	userID int(10) not null, /* foreign + pk */
 	email varchar(255) not null,/* unique charactersitics */
@@ -70,25 +86,72 @@ CREATE TABLE Identified(
 	CONSTRAINT UN_EMAIL UNIQUE (email),
 	CONSTRAINT UN_USERNAME UNIQUE (username), 
 	CONSTRAINT PK_IDENTIFIED PRIMARY KEY (userID)
-); 
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;   
 
-
-CREATE TABLE SESS(
-	sessID char(4) not null, /* pk */
+DROP TABLE IF EXISTS Session;
+CREATE TABLE Session(
+	session char(4) not null, /* pk */
 	userID int(10) not null, /*foreign */
 	questionnaireID varchar(255) not null, /*foreign */
 
 	CONSTRAINT FK_QuestionnaireID_SESSION FOREIGN KEY (questionnaireID) REFERENCES Questionnaire(questionnaireID),
 	CONSTRAINT FK_USER_ID_SESSION FOREIGN KEY (userID) REFERENCES User(userID),
-	CONSTRAINT PK_SESSION PRIMARY KEY (sessID)
-);
+	CONSTRAINT PK_SESSION PRIMARY KEY (session)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+
+DROP TABLE IF EXISTS Answer;
 CREATE TABLE Answer(
-	sessID char(4) not null, /*foreign */
+	session char(4) not null, /*foreign */
 	optID varchar(255) not null,/*foreign */
 	/* pk is both */
 
-	CONSTRAINT FK_SESSION_ANSWER FOREIGN KEY (sessID) REFERENCES SESS(sessID),
-	CONSTRAINT FK_OPTID_ANSWER FOREIGN KEY (optID) REFERENCES OPT(optID),
-	CONSTRAINT pk_ANSWER PRIMARY KEY (optID, sessID)
-);
+	CONSTRAINT FK_SESSION_ANSWER FOREIGN KEY (session) REFERENCES Session(session),
+	CONSTRAINT FK_OPTID_ANSWER FOREIGN KEY (optID) REFERENCES 'Option'(optID),
+	CONSTRAINT pk_ANSWER PRIMARY KEY (optID, session)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
+/* END OF TABLES
+
+/*------------------------------------ ------------------------------------ ------------------------------------*/
+
+/* START OF INDICES HERE */
+
+
+/* END OF INDICES HERE */
+
+/*------------------------------------ ------------------------------------ ------------------------------------*/
+
+/*					MAKE USERS 
+						WITH DIFFERENT PRIVILAGES
+
+													*/
+
+DROP USER IF EXISTS 'User_admin'@'localhost';
+
+DROP USER IF EXISTS 'User_2'@'localhost';
+
+
+CREATE USER 'User_admin'@'localhost' IDENTIFIED BY 'DBdb11@@';
+
+CREATE USER 'User_2'@'localhost' IDENTIFIED BY 'DBdb22@@';
+
+
+GRANT ALL ON intelliqDB.* TO 'User_admin'@'localhost';
+
+GRANT SELECT ON intelliqDB.* TO 'User_2'@'localhost';
+
+FLUSH PRIVILEGES;
+
+/*			USERS END			*/
+
+/*------------------------------------ ------------------------------------ ------------------------------------*/
+
+
+/*			TRIGGERS START HERE			*/
+
+/*			TRIGGERS END HERE			*/
+
+
+/*------------------------------------ ------------------------------------ ------------------------------------*/
