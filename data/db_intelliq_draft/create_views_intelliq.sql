@@ -1,21 +1,16 @@
 
 /* view for questionnaire with possible answers */
-
+DROP VIEW IF EXISTS view_Questionnaire;
 CREATE VIEW view_Questionnaire AS 
 SELECT questionnaireTitle, qtext, opttxt
-FROM Questionnaire, Question, OPT 
-WHERE Questionnaire.questionnaireID = Question.questionnaireID and OPT.qID = Question.qID
-/*
-
-ORDER BY questionnaireID, qID 
-								*/
-
+FROM Questionnaire, Question, 'Option'
+WHERE Questionnaire.questionnaireID = Question.questionnaireID and 'Option'.qID = Question.qID;
 
 
 /* view session from user */
-
-CREATE VIEW view_session_answers AS
-SELECT SESS.sessID, questionnaireTitle, qtext, opttxt
-FROM Questionnaire, Question, OPT, SESS, Answer
-WHERE Questionnaire.questionnaireID = Question.questionnaireID and OPT.qID = Question.qID and 
-		SESS.questionnaireID = Question.questionnaireID and OPT.optID = Answer.optID and SESS.sessID = Answer.sessID
+DROP VIEW IF EXISTS view_Quview_Session_answersestionnaire;
+CREATE VIEW view_Session_answers AS
+SELECT Session.session, questionnaireTitle, qtext, opttxt
+FROM Questionnaire, Question, 'Option', Session, Answer
+WHERE Questionnaire.questionnaireID = Question.questionnaireID and 'Option'.qID = Question.qID and
+		Session.questionnaireID = Question.questionnaireID and 'Option'.optID = Answer.optID and Session.session = Answer.session
