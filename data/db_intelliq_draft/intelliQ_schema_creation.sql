@@ -17,24 +17,24 @@ CREATE TABLE Questionnaire(
 	questionnaireTitle varchar(255) not null, 
 	dateUpdated date null,
 	CONSTRAINT PK_Questionnaire PRIMARY KEY (questionnaireID)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS Keyword;
 CREATE TABLE Keyword(
-	keywordID int(10) not null AUTO_INCREMENT, /*primary */
+	keywordID int not null AUTO_INCREMENT, /*primary */
 	word varchar(255) not null ,
 	questionnaireID varchar(255) not null, /* foreign */
 	CONSTRAINT PK_Keyword PRIMARY KEY (keywordID),
 	CONSTRAINT FK_QuestionnaireID_Keyword FOREIGN KEY (questionnaireID) REFERENCES Questionnaire(questionnaireID)
-)ENGINE=InnoDB AUTO_INCREMENT=20000 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS User;
 CREATE TABLE User(
-	userID int(10) not null AUTO_INCREMENT, /*pk */
+	userID int not null AUTO_INCREMENT, /*pk */
 	CONSTRAINT PK_User PRIMARY KEY (userID)
-)ENGINE=InnoDB AUTO_INCREMENT=50001 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /* create tables with derived keys */
 
@@ -46,16 +46,16 @@ CREATE TABLE Question (
     qtext varchar(255) not null, 
     required varchar(10) not null,
     type varchar(10) not null,
-    keywordID int(10) null, /* foreign key */
+    keywordID int null, /* foreign key */
 
     CONSTRAINT PK_Question PRIMARY KEY (qID),
     CONSTRAINT FK_Questionnaire_ID_Question FOREIGN KEY (questionnaireID) REFERENCES Questionnaire(questionnaireID),
     CONSTRAINT FK_Keyword_ID FOREIGN KEY (keywordID) REFERENCES Keyword(keywordID)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;  
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;  
 
 
-DROP TABLE IF EXISTS 'Option';
-CREATE TABLE 'Option'(
+DROP TABLE IF EXISTS `Option`;
+CREATE TABLE `Option`(
     optID varchar(255) not null, /* primary key */
     opttxt varchar(255) not null,
     qID varchar(255)  not null, /*foreign key */
@@ -63,21 +63,21 @@ CREATE TABLE 'Option'(
 
     CONSTRAINT PK_OPT PRIMARY KEY (optID),
     CONSTRAINT FK_QUestion_ID FOREIGN KEY (qID) REFERENCES Question(qID)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci; 
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; 
 
 
 DROP TABLE IF EXISTS Anonymous;
 CREATE TABLE Anonymous(
-	userID int(10) not null, /* foreign + pk */
+	userID int not null, /* foreign + pk */
 
 	CONSTRAINT FK_USER_ID_ANONYMOUS FOREIGN KEY (userID) REFERENCES User(userID),
 	CONSTRAINT PK_ANONYMOUS PRIMARY KEY (userID)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci; 
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; 
 
 
 DROP TABLE IF EXISTS Identified;
 CREATE TABLE Identified(
-	userID int(10) not null, /* foreign + pk */
+	userID int not null, /* foreign + pk */
 	email varchar(255) not null,/* unique charactersitics */
 	username varchar(255) not null,/* unique charactersitics */
 	password varchar(255) not null,
@@ -86,18 +86,18 @@ CREATE TABLE Identified(
 	CONSTRAINT UN_EMAIL UNIQUE (email),
 	CONSTRAINT UN_USERNAME UNIQUE (username), 
 	CONSTRAINT PK_IDENTIFIED PRIMARY KEY (userID)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;   
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;   
 
 DROP TABLE IF EXISTS Session;
 CREATE TABLE Session(
 	session char(4) not null, /* pk */
-	userID int(10) not null, /*foreign */
+	userID int not null, /*foreign */
 	questionnaireID varchar(255) not null, /*foreign */
 
 	CONSTRAINT FK_QuestionnaireID_SESSION FOREIGN KEY (questionnaireID) REFERENCES Questionnaire(questionnaireID),
 	CONSTRAINT FK_USER_ID_SESSION FOREIGN KEY (userID) REFERENCES User(userID),
 	CONSTRAINT PK_SESSION PRIMARY KEY (session)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS Answer;
@@ -107,9 +107,9 @@ CREATE TABLE Answer(
 	/* pk is both */
 
 	CONSTRAINT FK_SESSION_ANSWER FOREIGN KEY (session) REFERENCES Session(session),
-	CONSTRAINT FK_OPTID_ANSWER FOREIGN KEY (optID) REFERENCES 'Option'(optID),
+	CONSTRAINT FK_OPTID_ANSWER FOREIGN KEY (optID) REFERENCES `Option`(optID),
 	CONSTRAINT pk_ANSWER PRIMARY KEY (optID, session)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 /* END OF TABLES
