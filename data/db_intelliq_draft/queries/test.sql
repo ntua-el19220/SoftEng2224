@@ -1,0 +1,1 @@
+/*			Here should be a test query for intelliq_DB			*/
