@@ -59,7 +59,7 @@ CREATE TABLE `Option`(
     optID varchar(255) not null, /* primary key */
     opttxt varchar(255) not null,
     qID varchar(255)  not null, /*foreign key */
-    nextqID varchar(255) not null, 
+    nextqID varchar(255) null, /* null because there might not be e next question */
 
     CONSTRAINT PK_OPT PRIMARY KEY (optID),
     CONSTRAINT FK_QUestion_ID FOREIGN KEY (qID) REFERENCES Question(qID)
