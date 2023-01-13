@@ -11,3 +11,5 @@ WHERE
         q.questionnaireID = 'QQ001' AND
         q.qID = 'P0015'
 order by o.optID
+
+/* Looks good to me but why is the JOIN not an INNER JOIN? */
