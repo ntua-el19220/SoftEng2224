@@ -12,15 +12,3 @@ WHERE
         q.qID = '{qID}'
 ORDER BY
     s.session
-    
-/* I think we can do this with 2 joins instead of 3 like this:
-
-SELECT q.questionnaireID, q.qID, s.session, a.optID
-FROM
-Question q
-INNER JOIN Session s ON q.questionnaireID = s.questionnaireID
-INNER JOIN Answer a ON s.session = a.session
-WHERE q.qID = <....>
-ORDER BY s.session                -- not sure if this order by is correct 
-
-*/
