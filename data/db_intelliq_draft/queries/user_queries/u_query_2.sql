@@ -1,15 +1,10 @@
-/*          USER QUERY 2 --> b. {baseURL}/question/:questionnaireID/:questionID     */
-
-
 SELECT
     q.questionnaireID, q.qID, q.qtext, q.required, q.type,
     o.optID, o.opttxt, o.nextqID
 FROM
     Question q
-        JOIN `Option` O on o.qID = q.qID
+        INNER JOIN `Option` o on o.qID = q.qID
 WHERE
-        q.questionnaireID = 'QQ001' AND
-        q.qID = 'P0015'
+        q.questionnaireID = '{questionnaireID}' AND
+        q.qID = '{qID}'
 order by o.optID
-
-/* Looks good to me but why is the JOIN not an INNER JOIN? */
