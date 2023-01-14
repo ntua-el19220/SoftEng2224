@@ -11,6 +11,6 @@ WHERE questionnaireID = '{questionnaireID}'
 
 -- For questionnaire's questions
 SELECT q.qID as qID, q.qtext as qtext, q.required as required, q.type as type
-FROM question q 
+FROM Question q 
 WHERE q.questionnaireID = '{questionnaireID}'
 ORDER BY q.qID
