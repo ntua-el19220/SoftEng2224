@@ -99,6 +99,12 @@ CREATE TABLE Session(
 	CONSTRAINT PK_SESSION PRIMARY KEY (session)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+/*          Adding timestamp for Query e. operation         */
+ALTER TABLE Session
+    ADD created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+/*          End of alter taable                             */
+
 
 DROP TABLE IF EXISTS Answer;
 CREATE TABLE Answer(
