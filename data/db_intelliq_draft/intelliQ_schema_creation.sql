@@ -14,7 +14,7 @@ USE intelliqDB;
 DROP TABLE IF EXISTS Questionnaire;
 CREATE TABLE Questionnaire(
 	questionnaireID varchar(255) not null, /* Primary key */
-	questionnaireTitle varchar(255) not null, 
+	questionnaireTitle varchar(255) not null,
 	dateUpdated date null,
 	CONSTRAINT PK_Questionnaire PRIMARY KEY (questionnaireID)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -43,7 +43,7 @@ DROP TABLE IF EXISTS Question;
 CREATE TABLE Question (
     qID varchar(255) not null, /* primary key */
     questionnaireID varchar(255) not null, /* foreign key */
-    qtext varchar(255) not null, 
+    qtext varchar(255) not null,
     required varchar(10) not null,
     type varchar(10) not null,
     keywordID int null, /* foreign key */
@@ -51,7 +51,7 @@ CREATE TABLE Question (
     CONSTRAINT PK_Question PRIMARY KEY (qID),
     CONSTRAINT FK_Questionnaire_ID_Question FOREIGN KEY (questionnaireID) REFERENCES Questionnaire(questionnaireID),
     CONSTRAINT FK_Keyword_ID FOREIGN KEY (keywordID) REFERENCES Keyword(keywordID)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;  
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS `Option`;
@@ -63,7 +63,7 @@ CREATE TABLE `Option`(
 
     CONSTRAINT PK_OPT PRIMARY KEY (optID),
     CONSTRAINT FK_QUestion_ID FOREIGN KEY (qID) REFERENCES Question(qID)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; 
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS Anonymous;
@@ -72,7 +72,7 @@ CREATE TABLE Anonymous(
 
 	CONSTRAINT FK_USER_ID_ANONYMOUS FOREIGN KEY (userID) REFERENCES User(userID),
 	CONSTRAINT PK_ANONYMOUS PRIMARY KEY (userID)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci; 
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 DROP TABLE IF EXISTS Identified;
@@ -84,9 +84,9 @@ CREATE TABLE Identified(
 
 	CONSTRAINT FK_USER_ID_IDENTIFIED FOREIGN KEY (userID) REFERENCES User(userID),
 	CONSTRAINT UN_EMAIL UNIQUE (email),
-	CONSTRAINT UN_USERNAME UNIQUE (username), 
+	CONSTRAINT UN_USERNAME UNIQUE (username),
 	CONSTRAINT PK_IDENTIFIED PRIMARY KEY (userID)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;   
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 DROP TABLE IF EXISTS Session;
 CREATE TABLE Session(
@@ -106,7 +106,7 @@ CREATE TABLE Answer(
 	optID varchar(255) not null,/*foreign */
 	/* pk is both */
 
-	CONSTRAINT FK_SESSION_ANSWER FOREIGN KEY (session) REFERENCES Session(session),
+	CONSTRAINT FK_SESSION_ANSWER FOREIGN KEY (session) REFERENCES Session(session) ON DELETE CASCADE ON UPDATE CASCADE,
 	CONSTRAINT FK_OPTID_ANSWER FOREIGN KEY (optID) REFERENCES `Option`(optID),
 	CONSTRAINT pk_ANSWER PRIMARY KEY (optID, session)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -123,7 +123,7 @@ CREATE TABLE Answer(
 
 /*------------------------------------ ------------------------------------ ------------------------------------*/
 
-/*					MAKE USERS 
+/*					MAKE USERS
 						WITH DIFFERENT PRIVILAGES
 
 													*/
