@@ -1,3 +1,3 @@
-select userID email username
-   from identified
-   where ['input'] = username 
+select userID, email, username
+   from Identified
+   where username = "username" 
