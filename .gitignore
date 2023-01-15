@@ -1,1 +1,5 @@
 .gitignore
+/cli
+/api-backend/node_modules
+/data
+/api-backend/sslcert
