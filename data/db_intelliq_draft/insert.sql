@@ -1,3 +1,8 @@
+
+/*                  Added use Database */
+USE DATABASE intelliqDB;
+
+
 INSERT INTO Questionnaire (questionnaireID, questionnaireTitle, dateUpdated) VALUES ("QQ000", "Greek Teams", STR_TO_DATE("01/01/2023", '%d/%m/%Y'));
 INSERT INTO Questionnaire (questionnaireID, questionnaireTitle, dateUpdated) VALUES ("QQ001", "NBA Teams", STR_TO_DATE("02/01/2023", '%d/%m/%Y'));
 
