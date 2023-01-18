@@ -12,7 +12,7 @@ router.post('/:questionnaireID/:questionID/:session/:optionID', function(req, re
             connection.release();
             res.end();
   		} else {
-            const query = `INSERT INTO Answer (session, optID) VALUES (${session}, ${optionID});`; 
+            const query = `INSERT INTO Answer (session, optID) VALUES ('${session}', '${optionID}');`;
             connection.query(query, function(err, result) {
                 if(err) {
                     res.statusCode = 400;
