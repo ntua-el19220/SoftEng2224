@@ -13,7 +13,7 @@ router.post('/:questionnaireID', function(req, res) {
             res.end();
   		} else {
 
-            query = `DELETE FROM Session where questionnaireID = '${questionnaireID}';`;
+            query = `DELETE FROM Session where questionnaireID = ${questionnaireID};`;      /* this variables will be in quitation through the front end implementation */
             connection.query(query, function(err) {
                 if(err) {
                     res.statusMessage = "Bad Request";

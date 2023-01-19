@@ -15,15 +15,15 @@ router.get('/:questionnaireID', function(req, res) {
   		} else {
             query_1 = `SELECT questionnaireID, questionnaireTitle \
                        FROM Questionnaire \
-                       WHERE questionnaireID = '${questionnaireID}';`;
+                       WHERE questionnaireID = ${questionnaireID};`;                        /* this variables will be in quitation through the front end implementation */
 
             query_2 = `SELECT k.word \
                        FROM Keyword k \
-                       WHERE questionnaireID = '${questionnaireID}';`;
+                       WHERE questionnaireID = ${questionnaireID};`;                        /* this variables will be in quitation through the front end implementation */
 
             query_3 = `SELECT q.qID, q.qtext, q.required, q.type \
                        FROM Question q 
-                       WHERE q.questionnaireID = '${questionnaireID}' \
+                       WHERE q.questionnaireID = ${questionnaireID} \                       /* this variables will be in quitation through the front end implementation */
                        ORDER BY q.qID;`;         
             connection.query(query_1, function(err, result_1) {
                 if(err) {
