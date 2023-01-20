@@ -186,3 +186,90 @@ FROM Session s
     INNER JOIN `Option` o ON a.optID = o.optID
     INNER JOIN Question ON Question.questionnaireID = q.questionnaireID AND o.qID = Question.qID;
 /*              VIEWS END HERE            */
+
+
+/*------------------------------------ ------------------------------------ ------------------------------------*/
+
+/*              DB PROCEDURES START HERE            */
+
+/*         Admin endpoint 2 --> {baseURL}/admin/questionnaire_upd       */
+
+CREATE DEFINER=`root`@`%` PROCEDURE `quest_upd`(in quest json)
+BEGIN
+	DECLARE i INT DEFAULT 0;
+	DECLARE j INT DEFAULT 0;
+    -- DECLARE quest JSON;
+
+	DECLARE exit handler for sqlexception
+    BEGIN
+		ROLLBACK;
+		resignal;
+    END;
+    DECLARE exit handler for sqlwarning
+    BEGIN
+		ROLLBACK;
+        resignal;
+    END;
+    -- SELECT CONVERT(quest_text,  JSON) INTO quest;
+	START TRANSACTION;
+	-- Retrieve values from JSON
+	SET @questionnaireID = JSON_EXTRACT(quest, '$.questionnaireID');
+    SET @questionnaireTitle = JSON_EXTRACT(quest, '$.questionnaireTitle');
+	INSERT INTO Questionnaire (questionnaireID, questionnaireTitle) VALUES (
+		JSON_UNQUOTE(@questionnaireID),
+		JSON_UNQUOTE(@questionnaireTitle)
+	);
+    SET @keywords = JSON_EXTRACT(quest, '$.keywords');
+	SET @keywords_length = JSON_LENGTH(@keywords);
+	WHILE i < @keywords_length
+    DO
+		SET @word = JSON_EXTRACT(quest, CONCAT('$.keywords[',i,']'));
+        INSERT INTO Keyword (word, questionnaireID) VALUES (
+			JSON_UNQUOTE(@word),
+            JSON_UNQUOTE(@questionnaireID)
+        );
+		SELECT i + 1 INTO i;
+	END WHILE;
+    SET @quests = JSON_EXTRACT(quest, '$.questions');
+    SET @quests_length = JSON_LENGTH(@quests);
+	SELECT 0 INTO i;
+	WHILE i < @quests_length
+    DO
+		SET @qID = JSON_EXTRACT(quest, CONCAT('$.questions[',i,'].qID'));
+        SET @qtext = JSON_EXTRACT(quest, CONCAT('$.questions[',i,'].qtext'));
+        SET @required = JSON_EXTRACT(quest, CONCAT('$.questions[',i,'].required'));
+        SET @type = JSON_EXTRACT(quest, CONCAT('$.questions[',i,'].type'));
+		INSERT INTO Question (qID, questionnaireID, qtext, required, type) VALUES (
+			JSON_UNQUOTE(@qID),
+			JSON_UNQUOTE(@questionnaireID),
+            JSON_UNQUOTE(@qtext),
+            JSON_UNQUOTE(@required),
+            JSON_UNQUOTE(@type)
+		);
+
+        SET @options = JSON_EXTRACT(quest, CONCAT('$.questions[',i,'].options'));
+        SET @options_length = JSON_LENGTH(@options);
+		WHILE j < @options_length
+		DO
+
+			SET @optID = JSON_EXTRACT(quest, CONCAT('$.questions[',i,'].options[',j,'].optID'));
+            SET @opttxt = JSON_EXTRACT(quest, CONCAT('$.questions[',i,'].options[',j,'].opttxt'));
+            SET @nextqID = JSON_EXTRACT(quest, CONCAT('$.questions[',i,'].options[',j,'].nextqID'));
+            INSERT INTO `Option` (optID, opttxt, nextqID, qID) VALUES (
+				JSON_UNQUOTE(@optID),
+                JSON_UNQUOTE(@opttxt),
+                JSON_UNQUOTE(@nextqID),
+                JSON_UNQUOTE(@qID)
+            );
+			SELECT j + 1 INTO j;
+        END WHILE;
+        SELECT 0 INTO j;
+		SELECT i + 1 INTO i;
+	END WHILE;
+    COMMIT;
+END
+
+
+/*              DB PROCEDURES END HERE            */
+
+/*------------------------------------ ------------------------------------ ------------------------------------*/
