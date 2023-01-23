@@ -195,7 +195,7 @@ FROM Session s
 /*         Admin endpoint 2 --> {baseURL}/admin/questionnaire_upd       */
 DROP PROCEDURE IF EXISTS `quest_upd`;
 
-DELIMETER //
+DELIMITER //
 CREATE PROCEDURE `quest_upd`(in quest json)         -- DEFINER=`root`@`%`
 BEGIN
 	declare i, j int default 0;
