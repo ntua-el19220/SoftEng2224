@@ -193,81 +193,85 @@ FROM Session s
 /*              DB PROCEDURES START HERE            */
 
 /*         Admin endpoint 2 --> {baseURL}/admin/questionnaire_upd       */
+DROP PROCEDURE IF EXISTS `quest_upd`;
 
-CREATE DEFINER=`root`@`%` PROCEDURE `quest_upd`(in quest json)
+DELIMETER //
+CREATE PROCEDURE `quest_upd`(in quest json)         -- DEFINER=`root`@`%`
 BEGIN
-	DECLARE i INT DEFAULT 0;
-	DECLARE j INT DEFAULT 0;
-    -- DECLARE quest JSON;
+	declare i, j int default 0;
+    declare questionnaireID, questionnaireTitle, word, qID, qText, required, optID, opttxt, nextqID, type varchar(255);
+    declare keywords_length, quests_length, options_length int;
+    declare keywords, quests, options, currentQuest, currentOption json;
 
-	DECLARE exit handler for sqlexception
-    BEGIN
-		ROLLBACK;
+    -- exception handling
+    -- when ever an exception occurred (duplicate_key, null key, not a valid json...) then
+    --	rollback transaction and send the error to caller
+	declare exit handler for sqlexception
+    begin
+		rollback;
 		resignal;
-    END;
-    DECLARE exit handler for sqlwarning
-    BEGIN
-		ROLLBACK;
-        resignal;
-    END;
-    -- SELECT CONVERT(quest_text,  JSON) INTO quest;
-	START TRANSACTION;
-	-- Retrieve values from JSON
-	SET @questionnaireID = JSON_EXTRACT(quest, '$.questionnaireID');
-    SET @questionnaireTitle = JSON_EXTRACT(quest, '$.questionnaireTitle');
-	INSERT INTO Questionnaire (questionnaireID, questionnaireTitle) VALUES (
-		JSON_UNQUOTE(@questionnaireID),
-		JSON_UNQUOTE(@questionnaireTitle)
+    end;
+	start transaction;															-- start transaction
+	set questionnaireID = quest ->> '$.questionnaireID';						-- get questionnaireID
+    set questionnaireTitle = quest ->> '$.questionnaireTitle';					-- get questionnaireTitle
+    -- insert new questionnaire
+	insert into Questionnaire (questionnaireID, questionnaireTitle) values (
+		questionnaireID,
+		questionnaireTitle
 	);
-    SET @keywords = JSON_EXTRACT(quest, '$.keywords');
-	SET @keywords_length = JSON_LENGTH(@keywords);
-	WHILE i < @keywords_length
-    DO
-		SET @word = JSON_EXTRACT(quest, CONCAT('$.keywords[',i,']'));
-        INSERT INTO Keyword (word, questionnaireID) VALUES (
-			JSON_UNQUOTE(@word),
-            JSON_UNQUOTE(@questionnaireID)
+    set keywords = quest ->> '$.keywords';							-- get the json array with keywords
+	set keywords_length = json_length(keywords);								-- get the size of json array with keywords
+	while i < keywords_length
+    do
+		set word = json_extract(keywords, concat('$[', i, ']'));				-- get keyword
+        -- insert new keyword for this questionnaireID
+        insert into Keyword (word, questionnaireID) values (
+			word,
+            questionnaireID
         );
-		SELECT i + 1 INTO i;
-	END WHILE;
-    SET @quests = JSON_EXTRACT(quest, '$.questions');
-    SET @quests_length = JSON_LENGTH(@quests);
-	SELECT 0 INTO i;
-	WHILE i < @quests_length
-    DO
-		SET @qID = JSON_EXTRACT(quest, CONCAT('$.questions[',i,'].qID'));
-        SET @qtext = JSON_EXTRACT(quest, CONCAT('$.questions[',i,'].qtext'));
-        SET @required = JSON_EXTRACT(quest, CONCAT('$.questions[',i,'].required'));
-        SET @type = JSON_EXTRACT(quest, CONCAT('$.questions[',i,'].type'));
-		INSERT INTO Question (qID, questionnaireID, qtext, required, type) VALUES (
-			JSON_UNQUOTE(@qID),
-			JSON_UNQUOTE(@questionnaireID),
-            JSON_UNQUOTE(@qtext),
-            JSON_UNQUOTE(@required),
-            JSON_UNQUOTE(@type)
+		select i + 1 into i;													-- increment counter for words
+	end while;
+    set quests = quest ->> '$.questions';										-- get the json array with questions
+    set quests_length = json_length(quests);									-- get the size of json array with questions
+    select 0 into i;															-- reset counter for questions
+	while i < quests_length
+    do
+		set currentQuest = json_extract(quests, concat('$[', i, ']'));			-- current question (i)
+		set qID = currentQuest ->> '$.qID';
+        set qtext = currentQuest ->> '$.qtext';
+        set required = currentQuest ->> '$.required';
+        set type = currentQuest ->> '$.type';
+        -- insert new question (i)
+		insert into Question (qID, questionnaireID, qtext, required, type) values (
+			qID,
+			questionnaireID,
+            qtext,
+            required,
+            type
 		);
-
-        SET @options = JSON_EXTRACT(quest, CONCAT('$.questions[',i,'].options'));
-        SET @options_length = JSON_LENGTH(@options);
-		WHILE j < @options_length
+        set options = currentQuest ->> '$.options';								-- get the json array with options
+        set options_length = json_length(options);								-- get the size of json array with options
+		WHILE j < options_length
 		DO
-
-			SET @optID = JSON_EXTRACT(quest, CONCAT('$.questions[',i,'].options[',j,'].optID'));
-            SET @opttxt = JSON_EXTRACT(quest, CONCAT('$.questions[',i,'].options[',j,'].opttxt'));
-            SET @nextqID = JSON_EXTRACT(quest, CONCAT('$.questions[',i,'].options[',j,'].nextqID'));
-            INSERT INTO `Option` (optID, opttxt, nextqID, qID) VALUES (
-				JSON_UNQUOTE(@optID),
-                JSON_UNQUOTE(@opttxt),
-                JSON_UNQUOTE(@nextqID),
-                JSON_UNQUOTE(@qID)
+			set currentOption = json_extract(options, concat('$[', j, ']'));	-- current option (j) for question (i)
+			set optID = currentOption ->> '$.optID';
+            set opttxt = currentOption ->> '$.opttxt';
+            set nextqID = currentOption ->> '$.nextqID';
+            -- insert new option (j) for question (i)
+            insert into `Option` (optID, opttxt, nextqID, qID) values (
+				optID,
+                opttxt,
+                nextqID,
+                qID
             );
-			SELECT j + 1 INTO j;
-        END WHILE;
-        SELECT 0 INTO j;
-		SELECT i + 1 INTO i;
-	END WHILE;
-    COMMIT;
-END
+			select j + 1 into j;												-- increment counter for options
+        end while;
+        select 0 into j;														-- reset counter for options
+		select i + 1 into i;  													-- increment counter for questions
+	end while;
+    commit;																		-- commit changes
+END //
+DELIMITER ;
 
 
 /*              DB PROCEDURES END HERE            */
