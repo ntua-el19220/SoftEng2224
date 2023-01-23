@@ -17,9 +17,9 @@ INSERT INTO User (userID) VALUES (6);
 
 
 
-INSERT INTO Identified (userID, email, username, password) VALUES (1, "user1@identified.com" , "George", "Baris");
-INSERT INTO Identified (userID, email, username, password) VALUES (2, "user2@identified.com" , "John", "Chatzis");
-INSERT INTO Identified (userID, email, username, password) VALUES (3, "user3@identified.com" , "Minos", "Kountourakis");
+INSERT INTO Identified (userID, email, username, password) VALUES (1, "user1@identified.com" , "George", MD5("Baris"));
+INSERT INTO Identified (userID, email, username, password) VALUES (2, "user2@identified.com" , "John", MD5("Chatzis"));
+INSERT INTO Identified (userID, email, username, password) VALUES (3, "user3@identified.com" , "Minos", MD5("Kountourakis"));
 
 
 

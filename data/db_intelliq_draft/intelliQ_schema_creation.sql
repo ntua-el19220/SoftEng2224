@@ -68,7 +68,7 @@ CREATE TABLE `Option`(
 
 DROP TABLE IF EXISTS Anonymous;
 CREATE TABLE Anonymous(
-	userID int not null, /* foreign + pk */
+	userID int not null AUTO_INCREMENT, /* foreign + pk */
 
 	CONSTRAINT FK_USER_ID_ANONYMOUS FOREIGN KEY (userID) REFERENCES User(userID),
 	CONSTRAINT PK_ANONYMOUS PRIMARY KEY (userID)
@@ -77,7 +77,7 @@ CREATE TABLE Anonymous(
 
 DROP TABLE IF EXISTS Identified;
 CREATE TABLE Identified(
-	userID int not null, /* foreign + pk */
+	userID int not null AUTO_INCREMENT, /* foreign + pk */
 	email varchar(255) not null,/* unique charactersitics */
 	username varchar(255) not null,/* unique charactersitics */
 	password varchar(255) not null,
