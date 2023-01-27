@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<div id="layoutSidenav_content">
+    <main>
+        <div class="container-fluid px-4">
+            <!-- <h1 class="mt-4">Dashboard</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item active">Dashboard</li>
+            </ol> -->
+            {% include "questionnairesCard.html" %}
+            <h1 class="mt-4"></h1>
+            <h3 id="questionnaireHeader" class="mt-4" style="display:none; text-align:center;"></h3>
+            {% include "questionsCard.html" %}
+            {% include "graphs.html" %}
+        </div>
+    </main>
+    {% include "footer.html" %}
+</div>
+{% endblock content %}

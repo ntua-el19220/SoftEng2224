@@ -3,10 +3,11 @@
 **Group: (SoftEng22-24)**
 Members: el19145, el19220,el19172, el19866, el19923,el19116 
   
--- API BRANCH 
+-- Frontend BRANCH 
 Instructions:
 Type at the terminal "python run.py" in order to start the app.
 It resets the database.
+Copy the insert.sql and intelliQ_schema_creation.sql from the Database branch to the folder data/db_intelliq_draft
 
 For testing purposes there is the sript "runFast.py".
 You can type "python runFast.py" in order to start the app faster.
@@ -15,12 +16,11 @@ Note: Remember to change the mysql credentials at runFast.py:
  e.g.   os.environ["usernameMYSQL"] = "root"
         os.environ["passwordMYSQL"] = "root1234"
 
-Whats implemented:
-- All mandatory API endpoints 
-Exception: Endpoint {baseURL}/admin/questionnaire_upd
-isnt implemented yet as it requires the correspondent 
-frontend elements.
+What's implemented:
+- All API endpoints 
+- Frontend basic functionalities
 
-The API is not tested thoroughly. 
-Further testing is necessary 
-(using Postman https://www.postman.com).
+Frontend isnt fully ready! 
+However the CLI/API testing can be done from the API's code included in this branch, which is completed.
+
+Website available at https://localhost:8000/
