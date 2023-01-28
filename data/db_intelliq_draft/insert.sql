@@ -8,13 +8,7 @@ INSERT INTO Questionnaire (questionnaireID, questionnaireTitle, dateUpdated) VAL
 
 
 
-INSERT INTO User (userID) VALUES (1);
-INSERT INTO User (userID) VALUES (2);
-INSERT INTO User (userID) VALUES (3);
-INSERT INTO User (userID) VALUES (4);
-INSERT INTO User (userID) VALUES (5);
-INSERT INTO User (userID) VALUES (6);
-
+/* User_inserts Removed */
 
 
 INSERT INTO Identified (userID, email, username, password) VALUES (1, "user1@identified.com" , "George", MD5("Baris"));
@@ -23,11 +17,11 @@ INSERT INTO Identified (userID, email, username, password) VALUES (3, "user3@ide
 
 
 
-INSERT INTO Anonymous (userID) VALUES (4);
-INSERT INTO Anonymous (userID) VALUES (5);
-INSERT INTO Anonymous (userID) VALUES (6);
+INSERT INTO Anonymous () VALUES ();
+INSERT INTO Anonymous () VALUES ();
+INSERT INTO Anonymous () VALUES ();
 
-
+INSERT INTO Identified (email, username, password) VALUES ("admin@identified.com" , "Admin", MD5("Admin123"));
 
 INSERT INTO Keyword (keywordID, word, questionnaireID) VALUES (1, "Football" , "QQ000");
 INSERT INTO Keyword (keywordID, word, questionnaireID) VALUES (2, "Olympiacos" , "QQ000");
@@ -41,16 +35,15 @@ INSERT INTO Keyword (keywordID, word, questionnaireID) VALUES (8, "Chicago Bulls
 
 
 
-INSERT INTO Question (qID, questionnaireID, qtext, required, type, keywordID) VALUES ("Q00" , "QQ000" , "Which is your favourite Greek Football team?", "TRUE", "question", 1);
-INSERT INTO Question (qID, questionnaireID, qtext, required, type, keywordID) VALUES ("Q01" , "QQ000", "Who is your favourite Olympiacos Player", "TRUE", "question", 2);
-INSERT INTO Question (qID, questionnaireID, qtext, required, type, keywordID) VALUES ("Q02" , "QQ000", "Who is your favourite Panathinaikos Player", "TRUE", "question", 3);
-INSERT INTO Question (qID, questionnaireID, qtext, required, type, keywordID) VALUES ("Q03" , "QQ000", "Who is your favourite AEK Player", "TRUE", "question", 4);
+NSERT INTO Question (qID, questionnaireID, qtext, required, type, keywordID) VALUES ("Q00" , "QQ000" , "Which is your favourite Greek Football team?", "TRUE", "question", 1);
+INSERT INTO Question (qID, questionnaireID, qtext, required, type, keywordID) VALUES ("Q01" , "QQ000", "Who is your favourite Olympiacos Player", "FALSE", "question", 2);
+INSERT INTO Question (qID, questionnaireID, qtext, required, type, keywordID) VALUES ("Q02" , "QQ000", "Who is your favourite Panathinaikos Player", "FALSE", "question", 3);
+INSERT INTO Question (qID, questionnaireID, qtext, required, type, keywordID) VALUES ("Q03" , "QQ000", "Who is your favourite AEK Player", "FALSE", "question", 4);
 
 INSERT INTO Question (qID, questionnaireID, qtext, required, type, keywordID) VALUES ("Q04" , "QQ001" , "Which is your favourite NBA team?", "TRUE", "question", 5);
-INSERT INTO Question (qID, questionnaireID, qtext, required, type, keywordID) VALUES ("Q05" , "QQ001" , "Who is your facourite Golden State Warriors player?", "TRUE", "question", 6);
-INSERT INTO Question (qID, questionnaireID, qtext, required, type, keywordID) VALUES ("Q06" , "QQ001" , "Who is your favourite Los Angeles Lakers player?", "TRUE", "question", 7);
-INSERT INTO Question (qID, questionnaireID, qtext, required, type, keywordID) VALUES ("Q07" , "QQ001" , "Who is your favourite Chicago Bulls player?", "TRUE", "question", 8);
-
+INSERT INTO Question (qID, questionnaireID, qtext, required, type, keywordID) VALUES ("Q05" , "QQ001" , "Who is your facourite Golden State Warriors player?", "FALSE", "question", 6);
+INSERT INTO Question (qID, questionnaireID, qtext, required, type, keywordID) VALUES ("Q06" , "QQ001" , "Who is your favourite Los Angeles Lakers player?", "FALSE", "question", 7);
+INSERT INTO Question (qID, questionnaireID, qtext, required, type, keywordID) VALUES ("Q07" , "QQ001" , "Who is your favourite Chicago Bulls player?", "FALSE", "question", 8);
 
 
 INSERT INTO `Option` (optID, opttxt, qID, nextqID) VALUES ("Q00A1", "Olympiacos", "Q00", "Q01");
