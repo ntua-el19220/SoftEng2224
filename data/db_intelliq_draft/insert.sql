@@ -35,7 +35,7 @@ INSERT INTO Keyword (keywordID, word, questionnaireID) VALUES (8, "Chicago Bulls
 
 
 
-NSERT INTO Question (qID, questionnaireID, qtext, required, type, keywordID) VALUES ("Q00" , "QQ000" , "Which is your favourite Greek Football team?", "TRUE", "question", 1);
+INSERT INTO Question (qID, questionnaireID, qtext, required, type, keywordID) VALUES ("Q00" , "QQ000" , "Which is your favourite Greek Football team?", "TRUE", "question", 1);
 INSERT INTO Question (qID, questionnaireID, qtext, required, type, keywordID) VALUES ("Q01" , "QQ000", "Who is your favourite Olympiacos Player", "FALSE", "question", 2);
 INSERT INTO Question (qID, questionnaireID, qtext, required, type, keywordID) VALUES ("Q02" , "QQ000", "Who is your favourite Panathinaikos Player", "FALSE", "question", 3);
 INSERT INTO Question (qID, questionnaireID, qtext, required, type, keywordID) VALUES ("Q03" , "QQ000", "Who is your favourite AEK Player", "FALSE", "question", 4);
