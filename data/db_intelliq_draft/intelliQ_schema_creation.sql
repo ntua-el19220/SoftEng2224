@@ -154,15 +154,57 @@ FLUSH PRIVILEGES;
 
 /*------------------------------------ ------------------------------------ ------------------------------------*/
 
+/*
+  START OF TRIGGERS
+*/
 
-/*			TRIGGERS START HERE			*/
+/*      New table Added here       */
+
+DROP TABLE IF EXISTS latestUserIDinserted;
+CREATE TABLE latestUserIDinserted (
+  value INT NOT NULL,
+  PRIMARY KEY (value)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO latestUserIDinserted(value) values (0);
+
+/*   trigger for anonymous userID insertion     */
+
+DELIMITER $$
+DROP TRIGGER IF EXISTS InsertUserBeforeInsertAnonymous$$
+CREATE TRIGGER InsertUserBeforeInsertAnonymous
+BEFORE INSERT
+ON Anonymous FOR EACH ROW
+BEGIN
+DECLARE userID INT;
+INSERT INTO User () VALUES ();
+SET userID = LAST_INSERT_ID();
+SET NEW.userID = userID;
+update latestUserIDinserted set value = userID;
+END $$
+
+/*   trigger for Identified userID insertion     */
+
+DROP TRIGGER IF EXISTS InsertUserBeforeInsertIdentified$$
+CREATE TRIGGER InsertUserBeforeInsertIdentified
+BEFORE INSERT
+ON Identified FOR EACH ROW
+BEGIN
+DECLARE userID INT;
+INSERT INTO User () VALUES ();
+SET userID = LAST_INSERT_ID();
+SET NEW.userID = userID;
+SET @latestUserIDinserted = userID;
+update latestUserIDinserted set value = userID;
+END $$
+
+DELIMITER ;
 
 /*			TRIGGERS END HERE			*/
 
-
 /*------------------------------------ ------------------------------------ ------------------------------------*/
-/*              VIEWS START HERE            */
 
+/*              VIEWS START HERE            */
 
 /* view for questionnaire with possible answers */
 DROP VIEW IF EXISTS view_Questionnaire;
@@ -172,9 +214,6 @@ FROM Questionnaire q
          INNER JOIN Question a ON q.questionnaireID = a.questionnaireID
          INNER JOIN `Option` b ON b.qID = a.qID
 GROUP BY q.questionnaireID;
-
-
-
 
 /* view session from user */
 DROP VIEW IF EXISTS view_Session_answers;
@@ -186,7 +225,6 @@ FROM Session s
     INNER JOIN `Option` o ON a.optID = o.optID
     INNER JOIN Question ON Question.questionnaireID = q.questionnaireID AND o.qID = Question.qID;
 /*              VIEWS END HERE            */
-
 
 /*------------------------------------ ------------------------------------ ------------------------------------*/
 
