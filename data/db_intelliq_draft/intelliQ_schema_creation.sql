@@ -158,7 +158,42 @@ FLUSH PRIVILEGES;
   START OF TRIGGERS
 */
 
-/*      New table Added here       */
+/*      New tables Added here       */
+
+DROP TABLE IF EXISTS alf;
+CREATE TABLE alf(
+	prev char,
+	next char,
+	CONSTRAINT pk_alf PRIMARY KEY (prev)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO alf (prev,next) VALUES
+('A','B'),
+('B','C'),
+('C','D'),
+('D','E'),
+('E','F'),
+('F','G'),
+('G','H'),
+('H','I'),
+('I','J'),
+('J','K'),
+('K','L'),
+('L','M'),
+('M','N'),
+('N','O'),
+('O','P'),
+('P','Q'),
+('Q','R'),
+('R','S'),
+('S','T'),
+('T','U'),
+('U','V'),
+('V','W'),
+('W','X'),
+('X','Y'),
+('Y','Z'),
+('Z','A');
 
 DROP TABLE IF EXISTS latestUserIDinserted;
 CREATE TABLE latestUserIDinserted (
@@ -198,6 +233,16 @@ SET @latestUserIDinserted = userID;
 update latestUserIDinserted set value = userID;
 END $$
 
+DROP TRIGGER IF EXISTS IdentifiedUsersMask$$
+CREATE TRIGGER IdentifiedUsersMask
+BEFORE INSERT
+ON Identified FOR EACH ROW
+BEGIN
+IF new.email NOT LIKE '%@identified.com' THEN 
+SIGNAL SQLSTATE '50001' SET MESSAGE_TEXT = 'Email cannot be accepted. Only @identified.com emails allowed!';
+END IF;
+END $$
+
 DELIMITER ;
 
 /*			TRIGGERS END HERE			*/
@@ -213,7 +258,7 @@ SELECT questionnaireTitle,qtext,opttxt
 FROM Questionnaire q
          INNER JOIN Question a ON q.questionnaireID = a.questionnaireID
          INNER JOIN `Option` b ON b.qID = a.qID
-GROUP BY q.questionnaireID;
+ORDER BY q.questionnaireID;
 
 /* view session from user */
 DROP VIEW IF EXISTS view_Session_answers;
@@ -315,3 +360,40 @@ DELIMITER ;
 /*              DB PROCEDURES END HERE            */
 
 /*------------------------------------ ------------------------------------ ------------------------------------*/
+
+
+/*              DB FUNCTIONS START HERE           */
+
+
+DELIMITER $$
+DROP FUNCTION IF EXISTS nextsession;
+CREATE FUNCTION nextsession(sess char(4)) RETURNS char(4)
+DETERMINISTIC
+BEGIN
+	set @first = (select substring(sess,1,1));
+	set @second = (select substring(sess,2,1));
+	set @third = (select substring(sess,3,1));
+	set @fourth = (select substring(sess,4,1));
+	set @four = (select next from alf where prev = @fourth);
+	set @three = (select substring(sess,3,1));
+	set @two = (select substring(sess,2,1));
+	set @one = (select substring(sess,1,1));
+	IF @four = "A" THEN
+		set @three = (select next from alf where prev = @third);
+		IF @three = 'A' THEN
+			set @two = (select next from alf where prev = @second);
+			IF @two = 'A' THEN
+				set @one = (select next from alf where prev = @first);
+			END IF;
+		END IF;
+	END IF;
+	set @res = (select concat(@one,@two,@three,@four));
+	return @res;
+END $$
+
+DELIMITER ;
+
+
+/* DB FUNCTIONS END HERE       */
+
+/*-------------------------------------------------------------------------------------------------------------------*/
