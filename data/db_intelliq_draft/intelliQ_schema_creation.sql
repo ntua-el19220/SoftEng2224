@@ -11,11 +11,12 @@ USE intelliqDB;
 
 
 /* create primary tables tables */
+-- timestamp added on dateUpdated
 DROP TABLE IF EXISTS Questionnaire;
 CREATE TABLE Questionnaire(
 	questionnaireID varchar(255) not null, /* Primary key */
 	questionnaireTitle varchar(255) not null,
-	dateUpdated date null,
+    dateUpdated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	CONSTRAINT PK_Questionnaire PRIMARY KEY (questionnaireID)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -341,6 +342,11 @@ BEGIN
             set opttxt = currentOption ->> '$.opttxt';
             set nextqID = currentOption ->> '$.nextqID';
             -- insert new option (j) for question (i)
+             -- fixed the "-" set to null for the correct format of the Questionnaire
+            if nextqID = '-'
+                then
+                            set nextqID = null;
+            end if;
             insert into `Option` (optID, opttxt, nextqID, qID) values (
 				optID,
                 opttxt,
