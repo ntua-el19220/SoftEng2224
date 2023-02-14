@@ -61,8 +61,7 @@ print("Give MySQL credentials")
 userMYSQL = input("Give the username (e.g. root): ")  
 passwordMYSQL = input("Give the password: ")  
 createSchemaPath = os.path.join(projPath, "data", "db_intelliq_draft", "intelliQ_schema_creation.sql")
-print(createSchemaPath)
-createViewsPath = os.path.join(projPath, "data", "db_intelliq_draft", "create_views_intelliq.sql")
+insertDataPath = os.path.join(projPath, "data", "db_intelliq_draft", "insert.sql")
 
 try:
     subprocess.run('mysql -u{} -p"{}" < "{}"'.format(userMYSQL, passwordMYSQL, createSchemaPath), shell=True, check=True)
@@ -72,12 +71,49 @@ except:
 print("Database created successfully")
 
 try:
-    subprocess.run('mysql -u{} -p"{}" < "{}"'.format(userMYSQL, passwordMYSQL, createViewsPath), shell=True, check=True)
+    subprocess.run('mysql -u{} -p"{}" < "{}"'.format(userMYSQL, passwordMYSQL, insertDataPath), shell=True, check=True)
 except: 
-    print("Error occured while creating the views")
+    print("Error occured while inserting data in the database")
     exit(-1) # error 
-print("Views created successfully")
+print("Data Inserted successfully")
+
+
+
+try:
+    os.environ["usernameMYSQL"] = userMYSQL
+    os.environ["passwordMYSQL"] = passwordMYSQL
+    # set environment variables for child processes
+except: 
+    print("Error occured while creating the environment variables")
+    exit(-1) # error 
+print("Environment variables created successfully")
 
 #################################### insert data ########################################
 
-################################ start the database #####################################
+############################# generate https credentials #################################
+
+# For the generation of the certification's credentials we followed the instructions:
+# https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-apache-in-ubuntu-16-04
+
+try:
+    os.chdir(api_backendPath)
+    if not os.path.exists("./sslcert"):
+        os.makedirs("./sslcert")
+    os.chdir("./sslcert")
+    subprocess.run('sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ./server.key -out server.crt -subj "/C=GR/ST=Attiki/L=Athens/O=ECENTUA/OU=Team24/CN=localhost/emailAddress=softeng22-24@mail.ntua.com"', shell=True, check=True)
+    if sys.platform == "darwin":            #added system login in case macos user runs the script 
+        subprocess.run('sudo chown -R {} ./'.format(os.getlogin()), shell=True, check=True) 
+    else: subprocess.run('sudo chown {} -R ./'.format(os.environ.get('USERNAME')), shell=True, check=True)
+except: 
+    print("Error occured while creating HTTPS credentials")
+    exit(-1) # error 
+print("HTTPS credentials created successfully")
+
+################################ start the server #######################################
+os.chdir(api_backendPath)
+try:
+    subprocess.run('node index.js', shell=True, check=True)
+except: 
+    print("Error occured while starting the server")
+    exit(-1) # error 
+
