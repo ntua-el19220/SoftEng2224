@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const pool = require('./connect');
 
-router.get('/', function(req, res) {
+router.get('/:keyword', function(req, res) {
+    const {keyword} = req.params;
 	pool.getConnection(function(err, connection) {
 		if(err) {
             res.statusCode = 500;
@@ -11,7 +12,7 @@ router.get('/', function(req, res) {
             connection.release();
             res.end();
   		} else {
-            query = `SELECT * FROM Session s;`;
+            query = `SELECT * FROM Keyword k WHERE k.word = ${keyword};`;
             connection.query(query, function(err, result) {
                 if(err) {
                     res.statusCode = 400;
@@ -30,14 +31,13 @@ router.get('/', function(req, res) {
                     res.statusCode = 200;
                     res.statusMessage = "OK";
 
-                    const response = {"sessions":result};	
+                    const response = {"keywords":result};	
 
                     res.json(response);
                     // By default, the character encoding for the response will be set to UTF-8.
-                    console.log("json object returned for Sessions query", response);
+                    console.log("json object returned for keywords query", response);
                     connection.release();
                     res.end();
- 
                 }
             });
 		}

@@ -22,6 +22,11 @@ function showQuestionnaire(row) {
                 data-qID='+ data.questions[i].qID +' \
                 data-qtext='+ '"' + data.questions[i].qtext + '"' +'> \
                 <i class = "fa fa-eye"></i></a></td>'+
+                '<td><a id="download_'+ i + '" type="button" onclick="downloadAnswers(this)" \
+                data-questionnaireID='+ `${row.getAttribute("data-questionnaireID")}` +' \
+                data-id="download_'+ i + '" data-qID='+ data.questions[i].qID +' \
+                data-qtext='+ '"' + data.questions[i].qtext + '"' +'> \
+                <i class = "fa fa-download"></i></a></td>'+
                 "</tr>");
             }
             $('#questionsCard').show();
@@ -137,4 +142,42 @@ async function showQuestionInfo(row) {
     },
     });
     $('#pie_chart').show();
+}
+
+async function downloadAnswers(row) {
+    let {answers} = await getAnswers(row.getAttribute("data-questionnaireID"), row.getAttribute("data-qID"));
+    const json = {
+        "answers":answers
+    };
+
+    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(json));
+    var dlAnchorElem = document.getElementById(row.getAttribute("data-id"));
+    dlAnchorElem.setAttribute("href", dataStr);
+    dlAnchorElem.setAttribute("download", "answers.json");
+    dlAnchorElem.click();
+    dlAnchorElem.remove();
+
+    async function getAnswers(questionnaireID, qID) {
+        return $.ajax({
+            url: `https://localhost:9103/intelliq_api/getquestionanswers/"${questionnaireID}"/"${qID}"`,
+            headers:{'X-OBSERVATORY-AUTH': sessionStorage.getItem('token')},
+            type: 'GET',
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            cache: false,
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log(errorThrown, textStatus);
+                if (errorThrown == 'Not authorized') { 
+                    Swal.fire({
+                        icon: 'error',
+                        title: "Login Is Needed!",
+                        text: "Insert your credentials and try again"
+                    });
+                    setTimeout(function(){
+                        window.location.href = '/login';
+                    }, 2000);
+                } else alert("Error occured: " + textStatus + " - " + errorThrown);
+            }
+        });
+    }
 }

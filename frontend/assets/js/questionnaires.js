@@ -26,6 +26,49 @@ $('#logout-btn').on('click', function() {
     });
 }); 
 
+$('#btnNavbarSearch').on('click', async function() {
+    let keyword = document.getElementById("keyword").value;
+    document.getElementById("keyword").value = "";
+    
+    let {keywords} = await requestKeyword(keyword);
+
+    async function requestKeyword(keyword) {
+        return $.ajax({
+            url: `https://localhost:9103/intelliq_api/getkeywords/"${keyword}"`,
+            headers:{'X-OBSERVATORY-AUTH': sessionStorage.getItem('token')},
+            type: 'GET',
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            cache: false,
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log(errorThrown, textStatus);
+                if (errorThrown == 'Not authorized') { 
+                    Swal.fire({
+                        icon: 'error',
+                        title: "Login Is Needed!",
+                        text: "Insert your credentials and try again"
+                    });
+                    setTimeout(function(){
+                        window.location.href = '/login';
+                    }, 2000);
+                } else if (errorThrown == 'No Data') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: "No Questionnaires for given keyword"
+                    });
+                    setTimeout(function(){
+                        window.location.href = '/';
+                    }, 2000);
+                } else alert("Error occured: " + textStatus + " - " + errorThrown);
+            }
+        });
+    }
+    let questionnaires = [];
+    for (var i=0; i<keywords.length; i++) 
+        questionnaires.push(keywords[i].questionnaireID);
+    questionnairesApiCall(questionnaires);
+}); 
+
 $(document).ready(function(){
 
     $('#file-upload-form').submit(function(e) {
@@ -60,12 +103,12 @@ $(document).ready(function(){
 
     if (location.pathname == '/') {
         $('#username').html(`${sessionStorage.getItem('username')}`);
-        questionnairesApiCall();
+        questionnairesApiCall([]);
     }
     
 }); 
 
-function questionnairesApiCall() {
+function questionnairesApiCall(questionnaires) { // from NavbarSearch we have certain questionnaires to show, questionnaires = [] otherwise
     $.ajax({
         url: `https://localhost:9103/intelliq_api/getquestionnaires`,
         headers:{'X-OBSERVATORY-AUTH': sessionStorage.getItem('token')},
@@ -74,7 +117,9 @@ function questionnairesApiCall() {
         dataType: 'json',
         cache: false,
         async: false,
-        success: onSuccessQuestionnaires,
+        success: function(data) {
+            onSuccessQuestionnaires(data, questionnaires);
+        },
         error: function(jqXHR, textStatus, errorThrown){
             console.log(errorThrown, textStatus);
             if (errorThrown == 'Not authorized') { 
@@ -96,11 +141,20 @@ function questionnairesApiCall() {
 
 var myLineChart=null;
 
-async function onSuccessQuestionnaires(data) {    
+async function onSuccessQuestionnaires(data, questionnairesForGivenKeyword) {    
     $('#questionnaires-table').html("");   // Clear the table
     // if admin is using the app display the showQuestionnaire button
+    function search(key, array) {
+        for (let i=0; i < array.length; i++) {
+            if (array[i] === key) {
+                return 1;
+            }
+        }
+        return 0;
+    }
     if (sessionStorage.getItem('username') == '"Admin"') {
         for (var i=0; i<data.questionnaires.length; i++) {
+            if (questionnairesForGivenKeyword.length != 0 && search(data.questionnaires[i].questionnaireID, questionnairesForGivenKeyword) == 0) continue;
             $('#questionnaires-table').append("<tr>"+
             "<td>"+data.questionnaires[i].questionnaireID+"</td>"+    
             "<td>"+data.questionnaires[i].questionnaireTitle+"</td>"+
@@ -211,6 +265,7 @@ async function onSuccessQuestionnaires(data) {
 
     } else 
         for (var i=0; i<data.questionnaires.length; i++) {
+            if (questionnairesForGivenKeyword.length != 0 && search(data.questionnaires[i].questionnaireID, questionnairesForGivenKeyword) == 0) continue;
             $('#questionnaires-table').append("<tr>"+
             "<td>"+data.questionnaires[i].questionnaireID+"</td>"+    
             "<td>"+data.questionnaires[i].questionnaireTitle+"</td>"+
