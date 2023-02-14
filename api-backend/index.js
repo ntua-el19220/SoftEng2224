@@ -66,6 +66,11 @@ api.use((req, res, next) => {
             res.statusCode = 401;
             console.log("Authorization Failed: ", err);
             res.end();
+        } else if (req.path.includes('admin') && decoded.username != 'Admin') {
+            res.statusMessage = "Not authorized";
+            res.statusCode = 401;
+            console.log("Authorization Failed: Regular User called admin endpoints");
+            res.end();
         } else {
             req.decoded = decoded;
             next();
