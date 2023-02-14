@@ -93,6 +93,7 @@ api.use(baseURL+'logout', require('./logout'));
 api.use(baseURL+'createsession', require('./createsession'));
 api.use(baseURL+'istheresession', require('./istheresession'));
 api.use(baseURL+'getsessions', require('./getsessions'));
+api.use(baseURL+'getkeywords', require('./getkeywords'));
 
 // FRONTEND ROUTES
 web.use(express.static(path.join(__dirname, '..') + "/frontend/assets"));
