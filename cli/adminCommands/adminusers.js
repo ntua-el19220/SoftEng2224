@@ -8,5 +8,6 @@ var username2 = '"'+username1+'"';
     axios.get(url, {
               headers: { 'X-OBSERVATORY-AUTH': token}}).then(resp=>{
               console.log(resp.data);
-            });
+            }) .catch(function (error) {
+            console.log(error.message, error.response.data);});
 }

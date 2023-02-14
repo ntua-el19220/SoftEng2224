@@ -16,5 +16,6 @@ var usermod = querystring.stringify(obj);
     let url='https://localhost:9103/intelliq_api/admin/usermod/'+username2+'/'+password2+'/'+email2;
 axios.post(url, usermod, {headers: { "Content-Type": "application/x-www-form-urlencoded", 'X-OBSERVATORY-AUTH': token}}).then( resp => {
 	console.log(resp.data);
-    });
+    }) .catch(function (error) {
+            console.log(error.message, error.response.data);});
 }

@@ -10,5 +10,6 @@ axios.get(url, {
         'X-OBSERVATORY-AUTH': token}
       }).then( resp => {
         console.log(resp.data);
-    });
+    }) .catch(function (error) {
+            console.log(error.message, error.response.data);});
 }

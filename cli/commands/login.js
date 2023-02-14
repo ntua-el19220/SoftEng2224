@@ -17,5 +17,6 @@ axios.post(url, loginjson, {headers: { "Content-Type": "application/x-www-form-u
 	console.log(resp.data);
 	fs.writeFile('Intelliq_token.txt', resp.data.token, {encoding: 'utf8'}, function(err){if(err){console.log(err);}});
        // write resp.data.token to a config file;
-    });
+    }) .catch(function (error) {
+            console.log(error.message, error.response.data);});
 }

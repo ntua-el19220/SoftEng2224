@@ -10,5 +10,6 @@ var session_id = '"'+session_id1+'"';
         'X-OBSERVATORY-AUTH': token}
       }).then( resp => {
         console.log(resp.data);
-    });
+    }) .catch(function (error) {
+            console.log(error.message, error.response.data);});
 }
