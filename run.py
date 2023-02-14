@@ -101,7 +101,9 @@ try:
         os.makedirs("./sslcert")
     os.chdir("./sslcert")
     subprocess.run('sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ./server.key -out server.crt -subj "/C=GR/ST=Attiki/L=Athens/O=ECENTUA/OU=Team24/CN=localhost/emailAddress=softeng22-24@mail.ntua.com"', shell=True, check=True)
-    subprocess.run('sudo chown {} -R ./'.format(os.environ.get('USERNAME')), shell=True, check=True)
+    if sys.platform == "darwin":            #added system login in case macos user runs the script 
+        subprocess.run('sudo chown -R {} ./'.format(os.getlogin()), shell=True, check=True) 
+    else: subprocess.run('sudo chown {} -R ./'.format(os.environ.get('USERNAME')), shell=True, check=True)
 except: 
     print("Error occured while creating HTTPS credentials")
     exit(-1) # error 
@@ -114,3 +116,4 @@ try:
 except: 
     print("Error occured while starting the server")
     exit(-1) # error 
+
