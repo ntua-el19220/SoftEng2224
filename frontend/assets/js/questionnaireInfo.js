@@ -1,5 +1,5 @@
 function showQuestionnaire(row) {
-    $('#questionnaireHeader').html(`Info Regarding Questionnaire "${row.getAttribute("data-questionnaireTitle")}"`);   
+    $('#questionnaireHeader').html(`<br><u>Info Regarding Questionnaire "${row.getAttribute("data-questionnaireTitle")}"</u>`);   
     $('#questionnaireHeader').show();
     $.ajax({
         url: `https://localhost:9103/intelliq_api/questionnaire/"${row.getAttribute("data-questionnaireID")}"`,
@@ -41,6 +41,8 @@ function showQuestionnaire(row) {
         }
     });
 }
+
+var myPieChart=null;
 
 async function showQuestionInfo(row) {
     // Set new default font family and font color to mimic Bootstrap's default styling
@@ -101,21 +103,38 @@ async function showQuestionInfo(row) {
     answers = answers.sort((a, b) => a.ans.localeCompare(b.ans));
     const labels = options.map(item => item.opttxt);
     const counts = {};
+    for (const option of options) {
+        counts[option.optID] = 0;
+    }
     for (const json of answers) {
-        counts[json.ans] = counts[json.ans] ? counts[json.ans] + 1 : 1;
+        counts[json.ans]++; 
     }
 
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+    colors = [];
+    for (const option of options) {
+        colors.push(getRandomColor());
+    }
     // Pie Chart Example
     var ctx = document.getElementById("myPieChart");
-    var myPieChart = new Chart(ctx, {
+    if(myPieChart!=null)
+        myPieChart.destroy();
+    myPieChart = new Chart(ctx, {
     type: 'pie',
     data: {
         labels: labels,
         datasets: [{
         data: Object.values(counts),
-        //backgroundColor: ['#007bff', '#dc3545', '#ffc107', '#28a745'],
+        backgroundColor: colors,
         }],
     },
     });
-    $('#graphs').show();
+    $('#pie_chart').show();
 }
