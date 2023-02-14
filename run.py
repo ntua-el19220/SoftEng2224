@@ -50,7 +50,7 @@ cliPath = os.path.join(projPath, "cli")
 os.chdir(cliPath)
 
 try:
-    subprocess.run('npm install', shell=True, check=True)
+    subprocess.run('sudo npm install -g', shell=True, check=True)
 except: 
     print("Error occured while installing node dependencies for cli")
     exit(-1) # error 
