@@ -15,5 +15,6 @@ module.exports = function questionnaire_upd_call(source, token) {
         'Content-Type' : 'multipart/form-data'}
       }).then( resp => {
         console.log(resp.data);
-    });
+    }) .catch(function (error) {
+            console.log(error.message, error.response.data);});
 }

@@ -50,7 +50,8 @@ program
             axios.post(url, token, {
               headers: { 'X-OBSERVATORY-AUTH': token}}).then(resp=>{
               console.log(resp.data);
-            })
+            }) .catch(function (error) {
+            console.log(error.message, error.response.data);});
       })
     });
 
@@ -68,7 +69,8 @@ program
             axios.get(url, {
               headers: { 'X-OBSERVATORY-AUTH': token}}).then(resp=>{
               console.log(resp.data);
-            })
+            }) .catch(function (error) {
+            console.log(error.message, error.response.data);});
         })
     });
 
@@ -86,7 +88,8 @@ program
             axios.post(url, token, {
               headers: { 'X-OBSERVATORY-AUTH': token}}).then(resp=>{
               console.log(resp.data);
-            })
+            }) .catch(function (error) {
+            console.log(error.message, error.response.data);});
         })
     });
 
