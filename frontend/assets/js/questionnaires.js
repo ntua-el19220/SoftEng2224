@@ -94,23 +94,134 @@ function questionnairesApiCall() {
 // The cache property is set to false, which tells jQuery not to cache the response. 
 // The async property is set to false, which tells jQuery to make the request synchronously.
 
-function onSuccessQuestionnaires(data) {    
+var myLineChart=null;
+
+async function onSuccessQuestionnaires(data) {    
     $('#questionnaires-table').html("");   // Clear the table
-    for (var i=0; i<data.questionnaires.length; i++) {
-        $('#questionnaires-table').append("<tr>"+
-        "<td>"+data.questionnaires[i].questionnaireID+"</td>"+    
-        "<td>"+data.questionnaires[i].questionnaireTitle+"</td>"+
-        "<td>"+data.questionnaires[i].dateUpdated+"</td>"+
-        '<td><a type="button" onclick="showQuestionnaire(this)" \
-        data-questionnaireID='+ data.questionnaires[i].questionnaireID +' \
-        data-questionnaireTitle='+ '"' + data.questionnaires[i].questionnaireTitle + '"' +'> \
-        <i class = "fa fa-eye"></i></a></td>'+
-        '<td><a type="button" onclick="ansQuestionnaire(this)" \
-        data-questionnaireID='+ data.questionnaires[i].questionnaireID +' \
-        data-questionnaireTitle='+ '"' + data.questionnaires[i].questionnaireTitle + '"' +'> \
-        <i class="fa fa-edit"></i></a></td>'+
-        "</tr>");
-    }
+    // if admin is using the app display the showQuestionnaire button
+    if (sessionStorage.getItem('username') == '"Admin"') {
+        for (var i=0; i<data.questionnaires.length; i++) {
+            $('#questionnaires-table').append("<tr>"+
+            "<td>"+data.questionnaires[i].questionnaireID+"</td>"+    
+            "<td>"+data.questionnaires[i].questionnaireTitle+"</td>"+
+            "<td>"+data.questionnaires[i].dateUpdated+"</td>"+
+            '<td><a type="button" onclick="showQuestionnaire(this)" \
+            data-questionnaireID='+ data.questionnaires[i].questionnaireID +' \
+            data-questionnaireTitle='+ '"' + data.questionnaires[i].questionnaireTitle + '"' +'> \
+            <i class = "fa fa-eye"></i></a></td>'+
+            '<td><a type="button" onclick="ansQuestionnaire(this)" \
+            data-questionnaireID='+ data.questionnaires[i].questionnaireID +' \
+            data-questionnaireTitle='+ '"' + data.questionnaires[i].questionnaireTitle + '"' +'> \
+            <i class="fa fa-edit"></i></a></td>'+
+            "</tr>");
+        }
+
+        const questionnaires = data.questionnaires;
+        const labels = [];
+        const IDs = [];
+        const counts = [];
+        for (const questionnaire of questionnaires) {
+            labels.push(questionnaire.questionnaireTitle);
+            IDs.push(questionnaire.questionnaireID);
+            counts.push(0);
+        }
+
+        let {sessions} = await getSessions();
+
+        async function getSessions() {
+            return $.ajax({
+                url: `https://localhost:9103/intelliq_api/getsessions/`,
+                headers:{'X-OBSERVATORY-AUTH': sessionStorage.getItem('token')},
+                type: 'GET',
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                cache: false,
+                error: function(jqXHR, textStatus, errorThrown){
+                    console.log(errorThrown, textStatus);
+                    if (errorThrown == 'Not authorized') { 
+                        Swal.fire({
+                            icon: 'error',
+                            title: "Login Is Needed!",
+                            text: "Insert your credentials and try again"
+                        });
+                        setTimeout(function(){
+                            window.location.href = '/login';
+                        }, 2000);
+                    } else alert("Error occured: " + textStatus + " - " + errorThrown);
+                }
+            });
+        }
+        
+        function find_index(key, array){
+            for (let i=0; i < array.length; i++) {
+                if (array[i] === key) {
+                    return i;
+                }
+            }
+        }
+
+        for (const session of sessions) {
+            counts[find_index(session.questionnaireID, IDs)]++;
+        }
+        
+        var ctx = document.getElementById("myBarChart");
+        if(myLineChart!=null) myLineChart.destroy();
+        myLineChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+            label: "Answers",
+            backgroundColor: "rgba(2,117,216,1)",
+            borderColor: "rgba(2,117,216,1)",
+            data: counts,
+            }],
+        },
+        options: {
+            scales: {
+            xAxes: [{
+                time: {
+                unit: 'Questionnaire'
+                },
+                gridLines: {
+                display: false
+                },
+                ticks: {
+                maxTicksLimit: 10
+                }
+            }],
+            yAxes: [{
+                ticks: {
+                min: 0,
+                max: 20,
+                maxTicksLimit: 20
+                },
+                gridLines: {
+                display: true
+                }
+            }],
+            },
+            legend: {
+            display: false
+            }
+        }
+        });
+
+        $('#bar_chart').show();
+
+    } else 
+        for (var i=0; i<data.questionnaires.length; i++) {
+            $('#questionnaires-table').append("<tr>"+
+            "<td>"+data.questionnaires[i].questionnaireID+"</td>"+    
+            "<td>"+data.questionnaires[i].questionnaireTitle+"</td>"+
+            "<td>"+data.questionnaires[i].dateUpdated+"</td>"+
+            '<td><a type="button" onclick="ansQuestionnaire(this)" \
+            data-questionnaireID='+ data.questionnaires[i].questionnaireID +' \
+            data-questionnaireTitle='+ '"' + data.questionnaires[i].questionnaireTitle + '"' +'> \
+            <i class="fa fa-edit"></i></a></td>'+
+            "</tr>");
+        }
+
 }
 
 function ansQuestionnaire(row) {

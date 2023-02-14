@@ -18,7 +18,8 @@ router.get('/:questionnaireID/:questionID', function(req, res) {
                      INNER JOIN \`Option\` o ON q.qID = o.qID \
                      INNER JOIN Answer a ON a.optID = o.optID \
                      INNER JOIN Session s ON a.session = s.session \
-                     WHERE q.qID = ${questionID} ORDER BY s.created_at;`;
+                     WHERE q.qID = ${questionID} AND q.questionnaireID = ${questionnaireID} \
+                     ORDER BY s.created_at;`;
             connection.query(query, function(err, result) {
                 if(err) {
                     res.statusCode = 400;

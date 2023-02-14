@@ -23,7 +23,9 @@ router.post('/', function(req, res) {
                      DELETE FROM Question;\
                      DELETE FROM User;\
                      DELETE FROM Keyword;\
-                     DELETE FROM Questionnaire;";
+                     DELETE FROM Questionnaire; \
+                     UPDATE latestUserIDinserted set value = 0; \
+                     ALTER TABLE User AUTO_INCREMENT=1;";
 
             connection.query(query, function(err) {
                 if(err) {
