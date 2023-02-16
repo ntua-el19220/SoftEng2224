@@ -168,33 +168,7 @@ CREATE TABLE alf(
 	CONSTRAINT pk_alf PRIMARY KEY (prev)
 )ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-INSERT INTO alf (prev,next) VALUES
-('A','B'),
-('B','C'),
-('C','D'),
-('D','E'),
-('E','F'),
-('F','G'),
-('G','H'),
-('H','I'),
-('I','J'),
-('J','K'),
-('K','L'),
-('L','M'),
-('M','N'),
-('N','O'),
-('O','P'),
-('P','Q'),
-('Q','R'),
-('R','S'),
-('S','T'),
-('T','U'),
-('U','V'),
-('V','W'),
-('W','X'),
-('X','Y'),
-('Y','Z'),
-('Z','A');
+
 
 DROP TABLE IF EXISTS latestUserIDinserted;
 CREATE TABLE latestUserIDinserted (
@@ -371,29 +345,25 @@ DELIMITER ;
 /*              DB FUNCTIONS START HERE           */
 
 
+
+
 DELIMITER $$
-DROP FUNCTION IF EXISTS nextsession;
-CREATE FUNCTION nextsession(sess char(4)) RETURNS char(4)
+DROP FUNCTION IF EXISTS randomsession;
+CREATE FUNCTION randomsession() RETURNS char(4)
 DETERMINISTIC
 BEGIN
-	set @first = (select substring(sess,1,1));
-	set @second = (select substring(sess,2,1));
-	set @third = (select substring(sess,3,1));
-	set @fourth = (select substring(sess,4,1));
-	set @four = (select next from alf where prev = @fourth);
-	set @three = (select substring(sess,3,1));
-	set @two = (select substring(sess,2,1));
-	set @one = (select substring(sess,1,1));
-	IF @four = "A" THEN
-		set @three = (select next from alf where prev = @third);
-		IF @three = 'A' THEN
-			set @two = (select next from alf where prev = @second);
-			IF @two = 'A' THEN
-				set @one = (select next from alf where prev = @first);
-			END IF;
-		END IF;
-	END IF;
-	set @res = (select concat(@one,@two,@three,@four));
+	set @x = (select char(round(rand()*25)+65 using utf8mb4));
+	set @y = (select char(round(rand()*25)+65 using utf8mb4));
+	set @z = (select char(round(rand()*25)+65 using utf8mb4));
+	set @w = (select char(round(rand()*25)+65 using utf8mb4));
+	set @res = (select concat(@x collate utf8mb4_general_ci, @y collate utf8mb4_general_ci, @z collate utf8mb4_general_ci, @w collate utf8mb4_general_ci));
+	WHILE (@res in (select session from Session)) DO
+		set @x = (select char(round(rand()*25)+65 using utf8mb4));
+		set @y = (select char(round(rand()*25)+65 using utf8mb4));
+		set @z = (select char(round(rand()*25)+65 using utf8mb4));
+		set @w = (select char(round(rand()*25)+65 using utf8mb4));
+		set @res = (select concat(@x collate utf8mb4_general_ci, @y collate utf8mb4_general_ci, @z collate utf8mb4_general_ci, @w collate utf8mb4_general_ci));
+	END WHILE;
 	return @res;
 END $$
 
