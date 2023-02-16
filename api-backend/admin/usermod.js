@@ -9,7 +9,6 @@ router.post('/:username/:password/:email', function(req, res) {
             res.statusCode = 500;
             res.statusMessage = "Internal Server Error";
             console.log("Database Connection failed", err);
-            connection.release();
             res.end();
   		} else {
             const checkQuery = `SELECT * FROM Identified WHERE username = ${username};`;

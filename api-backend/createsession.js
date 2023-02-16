@@ -10,7 +10,6 @@ router.post('/:questionnaireID/:session', function(req, res) {
             res.statusCode = 500;
             res.statusMessage = "Internal Server Error";
             console.log("Database Connection failed", err);
-            connection.release();
             res.end();
   		} else {
             query_3 = `INSERT INTO Session (session, userID, questionnaireID) VALUES (${session}, ${userID}, ${questionnaireID});`;

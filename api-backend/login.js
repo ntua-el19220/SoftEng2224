@@ -6,13 +6,11 @@ const {jwtSecretKey} = require('./index');
 
 router.post('/', function(req, res) {
     const {username, password} = req.body;
-
     pool.getConnection(function(err, connection) {
 		if(err) {
             res.statusCode = 500;
             res.statusMessage = "Internal Server Error";
             console.log("Database Connection failed", err);
-            connection.release();
             res.end();
   		} else {
             if (username == '"AnonymousUser"') {

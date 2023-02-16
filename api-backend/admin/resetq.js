@@ -9,7 +9,6 @@ router.post('/:questionnaireID', function(req, res) {
             res.statusMessage = "Internal Server Error";
             res.status(500).json({status:"failed", "reason":"No Connection to the Database"});
             console.log("Database Connection failed", err);
-            connection.release();
             res.end();
   		} else {
 

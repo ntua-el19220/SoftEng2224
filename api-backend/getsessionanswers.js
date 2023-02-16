@@ -10,7 +10,6 @@ router.get('/:questionnaireID/:session', function(req, res) {
             res.statusCode = 500;
             res.statusMessage = "Internal Server Error";
             console.log("Database Connection failed", err);
-            connection.release();
             res.end();
   		} else {
             query = `SELECT s.questionnaireID, s.session, q.qID,a.optID \

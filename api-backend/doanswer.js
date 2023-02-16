@@ -9,7 +9,6 @@ router.post('/:questionnaireID/:questionID/:session/:optionID', function(req, re
             res.statusCode = 500;
             res.statusMessage = "Internal Server Error";
             console.log("Database Connection failed", err);
-            connection.release();
             res.end();
   		} else {
             const query_1 = `SELECT * FROM Session s \

@@ -9,13 +9,14 @@ router.get('/', function(req, res) {
             res.statusMessage = "Internal Server Error";
             res.status(500).json({status:"failed", "dbconnection":`${connectionString}`});
             console.log("Database Connection failed", err);
+            res.end();
   		} else {
             res.statusMessage = "OK";
 			res.status(200).json({status:"OK", "dbconnection":`${connectionString}`});
             console.log("Database Connection successful");
+            connection.release();
+            res.end();
 		}
-        connection.release();
-        res.end();
 	});
 });
 

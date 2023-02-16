@@ -9,7 +9,6 @@ router.get('/:keyword', function(req, res) {
             res.statusCode = 500;
             res.statusMessage = "Internal Server Error";
             console.log("Database Connection failed", err);
-            connection.release();
             res.end();
   		} else {
             query = `SELECT * FROM Keyword k WHERE k.word = ${keyword};`;
