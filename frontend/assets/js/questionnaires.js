@@ -342,7 +342,7 @@ function onSuccessAnsQuestionnaire(questionnaireID, questionnaireTitle, data) {
                         requiredQuestions++;
                 let answeredQuestions = 0;
                 givenAnswers = []; // record the answers till submission
-                recAnswerQuestion(data.session, questionnaireID, firstQuestionID, givenAnswers, answeredQuestions, requiredQuestions);
+                recAnswerQuestion(questionnaireID, firstQuestionID, givenAnswers, answeredQuestions, requiredQuestions);
             },
             error: function(jqXHR, textStatus, errorThrown){
                 alert("Error occured: " + textStatus + " - " + errorThrown);
@@ -352,7 +352,7 @@ function onSuccessAnsQuestionnaire(questionnaireID, questionnaireTitle, data) {
 }
 
 //{baseURL}/question/:questionnaireID/:questionID
-async function recAnswerQuestion(session, questionnaireID, qID, givenAnswers, answeredQuestions, requiredQuestions) {
+async function recAnswerQuestion(questionnaireID, qID, givenAnswers, answeredQuestions, requiredQuestions) {
     $.ajax({
         url: `https://localhost:9103/intelliq_api/question/"${questionnaireID}"/"${qID}"`,
         headers:{'X-OBSERVATORY-AUTH': sessionStorage.getItem('token')},
@@ -389,7 +389,7 @@ async function recAnswerQuestion(session, questionnaireID, qID, givenAnswers, an
                 showDenyButton: (answeredQuestions >= requiredQuestions), denyButtonText: `Submit Anwers (Current Excluded)`, denyButtonColor: '#a0f58c'
             }).then(result => {
                 if (!result.isDismissed) {
-                    if (result.value) givenAnswers.push({"questionnaireID": `${questionnaireID}`, "questionID": `${qID}`, "session": `${session}`, "optionID": `${result.value}`, "qtext": `${questionInfo.qtext}`, "opttxt": `${options[result.value]}`});
+                    if (result.value) givenAnswers.push({"questionnaireID": `${questionnaireID}`, "questionID": `${qID}`, "optionID": `${result.value}`, "qtext": `${questionInfo.qtext}`, "opttxt": `${options[result.value]}`});
                     if (nextQuestions[result.value] == null || result.isDenied) {
                         const title = (result.isDenied ? 'Required questions answered' : 'All questions answered!');
                         Swal.fire({
@@ -400,7 +400,7 @@ async function recAnswerQuestion(session, questionnaireID, qID, givenAnswers, an
                           }).then((result) => { // givenAnswers now hold the final data for submission
                             // create session
                             $.ajax({
-                                url: `https://localhost:9103/intelliq_api/createsession/"${questionnaireID}"/"${session}"`,
+                                url: `https://localhost:9103/intelliq_api/createsession/"${questionnaireID}"/""`,
                                 headers:{'X-OBSERVATORY-AUTH': sessionStorage.getItem('token')},
                                 type: 'POST',
                                 cache: false,
@@ -444,7 +444,7 @@ async function recAnswerQuestion(session, questionnaireID, qID, givenAnswers, an
                           })
                     } else {
                         // last question will not be submited if denyButton pressed
-                        recAnswerQuestion(session, questionnaireID, nextQuestions[result.value], givenAnswers, answeredQuestions+1, requiredQuestions);
+                        recAnswerQuestion(questionnaireID, nextQuestions[result.value], givenAnswers, answeredQuestions+1, requiredQuestions);
                     }    
                 } else {
                     Swal.fire({

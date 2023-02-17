@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('./connect');
-const randomstring = require("randomstring");
 
 router.get('/:questionnaireID', function(req, res) {
     const {questionnaireID} = req.params;
@@ -29,10 +28,9 @@ router.get('/:questionnaireID', function(req, res) {
                     connection.release();
                     res.end();
                 } else {
-                    const session = randomstring.generate(4);
                     res.statusCode = 200;
                     res.statusMessage = "OK";
-                    res.status(200).json({message:"Questionnaire not answered by the user", session:session});
+                    res.status(200).json({message:"Questionnaire not answered by the user"});
                     console.log("Questionnaire not answered by the user");
                     connection.release();
                     res.end();
