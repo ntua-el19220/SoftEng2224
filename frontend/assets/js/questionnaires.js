@@ -103,6 +103,8 @@ $(document).ready(function(){
 
     if (location.pathname == '/') {
         $('#username').html(`${sessionStorage.getItem('username')}`);
+        if (sessionStorage.getItem('username') == '"Admin"')
+            $('#file-upload-form').show();
         questionnairesApiCall([]);
     }
     
