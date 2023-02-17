@@ -1,0 +1,1543 @@
+{
+	"info": {
+		"_postman_id": "d332a423-bf45-4cc2-80e2-dfc27ae13cc5",
+		"name": "API_Testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "admin login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Token included\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"token\");",
+							"});",
+							"",
+							"var jsonData = pm.response.json();",
+							"pm.collectionVariables.set(\"token\", jsonData.token);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "\"Admin\"",
+							"type": "default"
+						},
+						{
+							"key": "password",
+							"value": "\"Admin123\"",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://localhost:9103/intelliq_api/login",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "9103",
+					"path": [
+						"intelliq_api",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "questionnaire correct",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"questionnaireID string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"questionnaireID\");",
+							"});",
+							"",
+							"pm.test(\"questionnaireTitle string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"questionnaireTitle\");",
+							"});",
+							"",
+							"pm.test(\"keywords string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"keywords\");",
+							"});",
+							"",
+							"pm.test(\"questions string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"questions\");",
+							"});",
+							"",
+							"pm.test(\"qID string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"qID\");",
+							"});",
+							"",
+							"pm.test(\"qtext string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"qtext\");",
+							"});",
+							"",
+							"pm.test(\"required string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"required\");",
+							"});",
+							"",
+							"pm.test(\"type string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"type\");",
+							"});",
+							"",
+							"pm.test(\"Correct questionnaireID\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.questionnaireID).to.eql(\"QQ000\");",
+							"});",
+							"",
+							"pm.test(\"Correct questionnaireTitle\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.questionnaireTitle).to.eql(\"Greek Teams\");",
+							"});",
+							"",
+							"pm.test(\"Correct type\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.questions[1].type).to.eql(\"question\");",
+							"});",
+							"",
+							"pm.test(\"Correct type\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.questions[2].type).to.eql(\"question\");",
+							"});",
+							"",
+							"pm.test(\"Correct type\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.questions[2].type).to.eql(\"question\");",
+							"});",
+							"",
+							"pm.test(\"Correct required\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.questions[0].required).to.eql(\"TRUE\");",
+							"});",
+							"",
+							"pm.test(\"Correct required\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.questions[1].required).to.eql(\"FALSE\");",
+							"});",
+							"",
+							"pm.test(\"Correct required\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.questions[2].required).to.eql(\"FALSE\");",
+							"});",
+							"",
+							"pm.test(\"Everything is correct\", function () {",
+							"    pm.response.to.have.body('{\"questionnaireID\":\"QQ000\",\"questionnaireTitle\":\"Greek Teams\",\"keywords\":[\"Football\",\"Olympiacos\",\"Panathinaikos\",\"AEK\"],\"questions\":[{\"qID\":\"Q00\",\"qtext\":\"Which is your favourite Greek Football team?\",\"required\":\"TRUE\",\"type\":\"question\"},{\"qID\":\"Q01\",\"qtext\":\"Who is your favourite Olympiacos Player\",\"required\":\"FALSE\",\"type\":\"question\"},{\"qID\":\"Q02\",\"qtext\":\"Who is your favourite Panathinaikos Player\",\"required\":\"FALSE\",\"type\":\"question\"},{\"qID\":\"Q03\",\"qtext\":\"Who is your favourite AEK Player\",\"required\":\"FALSE\",\"type\":\"question\"}]}');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-OBSERVATORY-AUTH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://localhost:9103/intelliq_api/questionnaire/\"QQ000\"",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "9103",
+					"path": [
+						"intelliq_api",
+						"questionnaire",
+						"\"QQ000\""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "questionnaire with wrong ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 402\", function () {",
+							"    pm.response.to.have.status(402);",
+							"});",
+							"",
+							"pm.test(\"No data = empty body\", function () {",
+							"    pm.response.to.have.body(\"\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-OBSERVATORY-AUTH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://localhost:9103/intelliq_api/questionnaire/\"QQ009\"",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "9103",
+					"path": [
+						"intelliq_api",
+						"questionnaire",
+						"\"QQ009\""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "question correct",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"questionnaireID\");",
+							"});",
+							"",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"qID\");",
+							"});",
+							"",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"qtext\");",
+							"});",
+							"",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"required\");",
+							"});",
+							"",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"type\");",
+							"});",
+							"",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"options\");",
+							"});",
+							"",
+							"pm.test(\"Correct Questionnaire\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.questionnaireID).to.eql(\"QQ000\");",
+							"});",
+							"",
+							"pm.test(\"Correct Question\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.qID).to.eql(\"Q01\");",
+							"});",
+							"",
+							"pm.test(\"Correct required\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.required).to.eql(\"FALSE\");",
+							"});",
+							"",
+							"pm.test(\"Correct type\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.type).to.eql(\"question\");",
+							"});",
+							"",
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body('{\"questionnaireID\":\"QQ000\",\"qID\":\"Q01\",\"qtext\":\"Who is your favourite Olympiacos Player\",\"required\":\"FALSE\",\"type\":\"question\",\"options\":[{\"optID\":\"Q01A1\",\"opttxt\":\"Bouchalakis\",\"nextqID\":null},{\"optID\":\"Q01A2\",\"opttxt\":\"El Arabi\",\"nextqID\":null},{\"optID\":\"Q01A3\",\"opttxt\":\"Valbuena\",\"nextqID\":null}]}');",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-OBSERVATORY-AUTH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "\"George\"",
+							"type": "default",
+							"disabled": true
+						},
+						{
+							"key": "password",
+							"value": "\"Baris\"",
+							"type": "default",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "https://localhost:9103/intelliq_api/question/\"QQ000\"/\"Q01\"",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "9103",
+					"path": [
+						"intelliq_api",
+						"question",
+						"\"QQ000\"",
+						"\"Q01\""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "question and questionnaire that don't match",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 402\", function () {",
+							"    pm.response.to.have.status(402);",
+							"});",
+							"",
+							"pm.test(\"No data = empty body\", function () {",
+							"    pm.response.to.have.body(\"\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-OBSERVATORY-AUTH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "https://localhost:9103/intelliq_api/question/\"QQ000\"/\"Q04\"",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "9103",
+					"path": [
+						"intelliq_api",
+						"question",
+						"\"QQ000\"",
+						"\"Q04\""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createsession BBBB",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"message\");",
+							"});",
+							"",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"session\");",
+							"});",
+							"",
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.message).to.eql('Session Created');",
+							"});",
+							"",
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.session).to.eql('\\\"BBBB\\\"');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-OBSERVATORY-AUTH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:9103/intelliq_api/createsession/\"QQ000\"/\"BBBB\"",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "9103",
+					"path": [
+						"intelliq_api",
+						"createsession",
+						"\"QQ000\"",
+						"\"BBBB\""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "doanswer correct",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-OBSERVATORY-AUTH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:9103/intelliq_api/doanswer/\"QQ000\"/\"Q00\"/\"BBBB\"/\"Q00A1\"",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "9103",
+					"path": [
+						"intelliq_api",
+						"doanswer",
+						"\"QQ000\"",
+						"\"Q00\"",
+						"\"BBBB\"",
+						"\"Q00A1\""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "doanswer wrong",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-OBSERVATORY-AUTH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:9103/intelliq_api/doanswer/\"QQ000\"/\"Q21\"/\"BBBB\"/\"Q00A2\"",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "9103",
+					"path": [
+						"intelliq_api",
+						"doanswer",
+						"\"QQ000\"",
+						"\"Q21\"",
+						"\"BBBB\"",
+						"\"Q00A2\""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getsessionanswers BBBB",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.questionnaireID).to.eql('QQ000');",
+							"});",
+							"",
+							"pm.test(\"Your test name\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.session).to.eql('BBBB');",
+							"});",
+							"",
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body('{\"questionnaireID\":\"QQ000\",\"session\":\"BBBB\",\"answers\":[{\"qID\":\"Q00\",\"ans\":\"Q00A1\"}]}');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-OBSERVATORY-AUTH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:9103/intelliq_api/getsessionanswers/\"QQ000\"/\"BBBB\"",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "9103",
+					"path": [
+						"intelliq_api",
+						"getsessionanswers",
+						"\"QQ000\"",
+						"\"BBBB\""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getsessionanswers correct",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"questionnaireID string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"questionnaireID\");",
+							"});",
+							"",
+							"pm.test(\"session string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"session\");",
+							"});",
+							"",
+							"pm.test(\"answers string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"answers\");",
+							"});",
+							"",
+							"pm.test(\"qID string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"qID\");",
+							"});",
+							"",
+							"pm.test(\"ans string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"ans\");",
+							"});",
+							"",
+							"pm.test(\"Correct questionnaireID\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.questionnaireID).to.eql(\"QQ000\");",
+							"});",
+							"",
+							"pm.test(\"Correct session\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.session).to.eql(\"AAAA\");",
+							"});",
+							"",
+							"pm.test(\"Everything correct\", function () {",
+							"    pm.response.to.have.body('{\"questionnaireID\":\"QQ000\",\"session\":\"AAAA\",\"answers\":[{\"qID\":\"Q00\",\"ans\":\"Q00A1\"},{\"qID\":\"Q01\",\"ans\":\"Q01A1\"}]}');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-OBSERVATORY-AUTH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://localhost:9103/intelliq_api/getsessionanswers/\"QQ000\"/\"AAAA\"",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "9103",
+					"path": [
+						"intelliq_api",
+						"getsessionanswers",
+						"\"QQ000\"",
+						"\"AAAA\""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getsessionanswers wrong IDs",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 402\", function () {",
+							"    pm.response.to.have.status(402);",
+							"});",
+							"",
+							"pm.test(\"No data = empty body\", function () {",
+							"    pm.response.to.have.body(\"\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-OBSERVATORY-AUTH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://localhost:9103/intelliq_api/getsessionanswers/\"QQ000\"/\"AAAB\"",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "9103",
+					"path": [
+						"intelliq_api",
+						"getsessionanswers",
+						"\"QQ000\"",
+						"\"AAAB\""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getquestionanswers correct",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"questionnaireID string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"questionnaireID\");",
+							"});",
+							"",
+							"pm.test(\"questionID string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"questionID\");",
+							"});",
+							"",
+							"pm.test(\"answers string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"answers\");",
+							"});",
+							"",
+							"pm.test(\"session string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"session\");",
+							"});",
+							"",
+							"pm.test(\"ans string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"ans\");",
+							"});",
+							"",
+							"pm.test(\"Correct questionnaireID\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.questionnaireID).to.eql(\"QQ001\");",
+							"});",
+							"",
+							"pm.test(\"Correct questionID\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.questionID).to.eql(\"Q05\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-OBSERVATORY-AUTH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://localhost:9103/intelliq_api/getquestionanswers/\"QQ001\"/\"Q05\"",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "9103",
+					"path": [
+						"intelliq_api",
+						"getquestionanswers",
+						"\"QQ001\"",
+						"\"Q05\""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getquestionanswers IDs not matching",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 402\", function () {",
+							"    pm.response.to.have.status(402);",
+							"});",
+							"",
+							"pm.test(\"No data = empty body\", function () {",
+							"    pm.response.to.have.body(\"\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-OBSERVATORY-AUTH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://localhost:9103/intelliq_api/getquestionanswers/\"QQ001\"/\"Q00\"",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "9103",
+					"path": [
+						"intelliq_api",
+						"getquestionanswers",
+						"\"QQ001\"",
+						"\"Q00\""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "healthcheck",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include('{\"status\":\"OK\",\"dbconnection\":\"mysql');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-OBSERVATORY-AUTH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://localhost:9103/intelliq_api/admin/healthcheck",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "9103",
+					"path": [
+						"intelliq_api",
+						"admin",
+						"healthcheck"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "admin/questionnaire_upd",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-OBSERVATORY-AUTH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/home/lekog/ECE/semester7/softeng/Questionnaire_gia_exetash.json"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://localhost:9103/intelliq_api/admin/questionnaire_upd",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "9103",
+					"path": [
+						"intelliq_api",
+						"admin",
+						"questionnaire_upd"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "admin/resetq/\"QQ000\"",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body('{\"status\":\"OK\"}');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-OBSERVATORY-AUTH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://localhost:9103/intelliq_api/admin/resetq/\"QQ000\"",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "9103",
+					"path": [
+						"intelliq_api",
+						"admin",
+						"resetq",
+						"\"QQ000\""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "usermod for password change",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-OBSERVATORY-AUTH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://localhost:9103/intelliq_api/admin/usermod/\"George\"/\"test\"/\"user1@identified.com\"",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "9103",
+					"path": [
+						"intelliq_api",
+						"admin",
+						"usermod",
+						"\"George\"",
+						"\"test\"",
+						"\"user1@identified.com\""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "usermod for new user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-OBSERVATORY-AUTH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://localhost:9103/intelliq_api/admin/usermod/\"Petros\"/\"Rapto\"/\"user4@identified.com\"",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "9103",
+					"path": [
+						"intelliq_api",
+						"admin",
+						"usermod",
+						"\"Petros\"",
+						"\"Rapto\"",
+						"\"user4@identified.com\""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "admin/users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body('{\"userID\":\"2\",\"username\":\"John\",\"password\":\"faee81bbf9f74dee1c72eca965fbb962\",\"email\":\"user2@identified.com\"}');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-OBSERVATORY-AUTH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "https://localhost:9103/intelliq_api/admin/users/\"John\"",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "9103",
+					"path": [
+						"intelliq_api",
+						"admin",
+						"users",
+						"\"John\""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "admin/resetall",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Body is correct\", function () {",
+							"    pm.response.to.have.body('{\"status\":\"OK\"}');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-OBSERVATORY-AUTH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "default",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "https://localhost:9103/intelliq_api/admin/resetall",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "9103",
+					"path": [
+						"intelliq_api",
+						"admin",
+						"resetall"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-OBSERVATORY-AUTH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:9103/intelliq_api/logout",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "9103",
+					"path": [
+						"intelliq_api",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "logout test",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});",
+							"",
+							"pm.test(\"Not authorized = no data\", function () {",
+							"    pm.response.to.have.body(\"\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey",
+					"apikey": [
+						{
+							"key": "value",
+							"value": "{{token}}",
+							"type": "string"
+						},
+						{
+							"key": "key",
+							"value": "X-OBSERVATORY-AUTH",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:9103/intelliq_api/questionnaire/\"QQ000\"",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "9103",
+					"path": [
+						"intelliq_api",
+						"questionnaire",
+						"\"QQ000\""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": ""
+		}
+	]
+}
