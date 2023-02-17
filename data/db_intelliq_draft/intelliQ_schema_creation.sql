@@ -161,14 +161,6 @@ FLUSH PRIVILEGES;
 
 /*      New tables Added here       */
 
-DROP TABLE IF EXISTS alf;
-CREATE TABLE alf(
-	prev char,
-	next char,
-	CONSTRAINT pk_alf PRIMARY KEY (prev)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-
 
 DROP TABLE IF EXISTS latestUserIDinserted;
 CREATE TABLE latestUserIDinserted (
