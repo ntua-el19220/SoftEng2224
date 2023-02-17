@@ -49,7 +49,6 @@ router.post('/',  function(req, res) {
         res.statusCode = 400;
         res.statusMessage = "Bad Request";
         console.log("No file was uploaded");
-        connection.release();
         res.end();
     }
 });
