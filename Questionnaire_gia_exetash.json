@@ -1,0 +1,362 @@
+{
+  "questionnaireID": "QQ100",
+  "questionnaireTitle": "Ερωτηματολόγιο Παρουσίασης",
+  "keywords": [
+    "ECE",
+    "NTUA",
+    "SOFTWARE ENGINEERING"
+  ],
+  "questions": [
+    {
+      "qID": "P00",
+      "qtext": "Οι στόχοι του μαθήματος είναι σαφείς;",
+      "required": "TRUE",
+      "type": "question",
+      "options": [
+        {
+          "optID": "P00A1",
+          "opttxt": "Καθόλου",
+          "nextqID": "P01"
+        },
+        {
+          "optID": "P00A2",
+          "opttxt": "Λίγο",
+          "nextqID": "P01"
+        },
+        {
+          "optID": "P00A3",
+          "opttxt": "Μέτρια",
+          "nextqID": "P01"
+        },
+        {
+          "optID": "P00A4",
+          "opttxt": "Πολύ",
+          "nextqID": "P01"
+        },
+        {
+          "optID": "P00A5",
+          "opttxt": "Πάρα πολύ",
+          "nextqID": "P01"
+        }
+      ]
+    },
+    {
+      "qID": "P01",
+      "qtext": "Η ύλη που καλύφθηκε ανταποκρίνεται στους στόχους του μαθήματος;",
+      "required": "TRUE",
+      "type": "question",
+      "options": [
+        {
+          "optID": "P01A1",
+          "opttxt": "Καθόλου",
+          "nextqID": "P02"
+        },
+        {
+          "optID": "P01A2",
+          "opttxt": "Λίγο",
+          "nextqID": "P02"
+        },
+        {
+          "optID": "P01A3",
+          "opttxt": "Μέτρια",
+          "nextqID": "P02"
+        },
+        {
+          "optID": "P01A4",
+          "opttxt": "Πολύ",
+          "nextqID": "P02"
+        },
+        {
+          "optID": "P01A5",
+          "opttxt": "Πάρα πολύ",
+          "nextqID": "P02"
+        }
+      ]
+    },
+    {
+      "qID": "P02",
+      "qtext": "Ασχοληθήκατε και παραδώσατε την εξαμηνιαία εργασία;",
+      "required": "TRUE",
+      "type": "question",
+      "options": [
+        {
+          "optID": "P02A1",
+          "opttxt": "Ναι",
+          "nextqID": "P03"
+        },
+        {
+          "optID": "P02A2",
+          "opttxt": "Οχι",
+          "nextqID": "P05"
+        }
+      ]
+    },
+    {
+      "qID": "P03",
+      "qtext": "Το αντικείμενο των εργαστηριακών ασκήσεων εξυπηρετεί τους στόχους του μαθήματος;",
+      "required": "TRUE",
+      "type": "question",
+      "options": [
+        {
+          "optID": "P03A1",
+          "opttxt": "Καθόλου",
+          "nextqID": "P04"
+        },
+        {
+          "optID": "P03A2",
+          "opttxt": "Λίγο",
+          "nextqID": "P04"
+        },
+        {
+          "optID": "P03A3",
+          "opttxt": "Μέτρια",
+          "nextqID": "P04"
+        },
+        {
+          "optID": "P03A4",
+          "opttxt": "Πολύ",
+          "nextqID": "P04"
+        },
+        {
+          "optID": "P03A5",
+          "opttxt": "Πάρα πολύ",
+          "nextqID": "P04"
+        }
+      ]
+    },
+    {
+      "qID": "P04",
+      "qtext": "Τα εκπαιδευτικά κείμενα που βρίσκονται στην ιστοσελίδα του μαθήματος είναι βοηθητικά για την υλοποίηση του project;",
+      "required": "TRUE",
+      "type": "question",
+      "options": [
+        {
+          "optID": "P04A1",
+          "opttxt": "Καθόλου",
+          "nextqID": "P05"
+        },
+        {
+          "optID": "P04A2",
+          "opttxt": "Λίγο",
+          "nextqID": "P05"
+        },
+        {
+          "optID": "P04A3",
+          "opttxt": "Μέτρια",
+          "nextqID": "P05"
+        },
+        {
+          "optID": "P04A4",
+          "opttxt": "Πολύ",
+          "nextqID": "P05"
+        },
+        {
+          "optID": "P04A5",
+          "opttxt": "Πάρα πολύ",
+          "nextqID": "P05"
+        }
+      ]
+    },
+    {
+      "qID": "P05",
+      "qtext": "Ο διδάσκων οργανώνει και παρουσιάζει το περιεχόμενο του μαθήματος με συστηματικό και μεθοδικό τρόπο;",
+      "required": "TRUE",
+      "type": "question",
+      "options": [
+        {
+          "optID": "P05A1",
+          "opttxt": "Καθόλου",
+          "nextqID": "P06"
+        },
+        {
+          "optID": "P05A2",
+          "opttxt": "Λίγο",
+          "nextqID": "P06"
+        },
+        {
+          "optID": "P05A3",
+          "opttxt": "Μέτρια",
+          "nextqID": "P06"
+        },
+        {
+          "optID": "P05A4",
+          "opttxt": "Πολύ",
+          "nextqID": "P06"
+        },
+        {
+          "optID": "P05A5",
+          "opttxt": "Πάρα πολύ",
+          "nextqID": "P06"
+        }
+      ]
+    },
+    {
+      "qID": "P06",
+      "qtext": "Παρακολουθώ τακτικά τις διαλέξεις του μαθήματος;",
+      "required": "TRUE",
+      "type": "question",
+      "options": [
+        {
+          "optID": "P06A1",
+          "opttxt": "Καθόλου",
+          "nextqID": "P09"
+        },
+        {
+          "optID": "P06A2",
+          "opttxt": "Λίγο",
+          "nextqID": "P07"
+        },
+        {
+          "optID": "P06A3",
+          "opttxt": "Μέτρια",
+          "nextqID": "P07"
+        },
+        {
+          "optID": "P06A4",
+          "opttxt": "Πολύ",
+          "nextqID": "P07"
+        },
+        {
+          "optID": "P06A5",
+          "opttxt": "Πάρα πολύ",
+          "nextqID": "P07"
+        }
+      ]
+    },
+    {
+      "qID": "P07",
+      "qtext": "Ο χρόνος που διαθέτω ανά εβδομάδα επιπλέον των προγραμματισμένων ωρών διδασκαλίας για την προετοιμασία και την κατανόηση του μαθήματος είναι (κατά μέσο όρο):",
+      "required": "TRUE",
+      "type": "question",
+      "options": [
+        {
+          "optID": "P07A1",
+          "opttxt": "Έως 1ω",
+          "nextqID": "P08"
+        },
+        {
+          "optID": "P07A2",
+          "opttxt": "Εως 2ω",
+          "nextqID": "P08"
+        },
+        {
+          "optID": "P07A3",
+          "opttxt": "Εως 4ω",
+          "nextqID": "P08"
+        }
+      ]
+    },
+    {
+      "qID": "P08",
+      "qtext": "Ο χρόνος που διαθέτω ανά εβδομάδα για προετοιμασία εργασιών και θεμάτων του μαθήματος είναι (κατά μέσο όρο):",
+      "required": "TRUE",
+      "type": "question",
+      "options": [
+        {
+          "optID": "P08A1",
+          "opttxt": "Έως 1ω",
+          "nextqID": "P09"
+        },
+        {
+          "optID": "P08A2",
+          "opttxt": "Εως 4ω",
+          "nextqID": "P09"
+        },
+        {
+          "optID": "P08A3",
+          "opttxt": "Εως 8ω",
+          "nextqID": "P09"
+        }
+      ]
+    },
+    {
+      "qID": "P09",
+      "qtext": "Φοιτώ στο εξάμηνο:",
+      "required": "FALSE",
+      "type": "profile",
+      "options": [
+        {
+          "optID": "P09A3",
+          "opttxt": "5o",
+          "nextqID": "P10"
+        },
+        {
+          "optID": "P09A4",
+          "opttxt": "7o",
+          "nextqID": "P10"
+        },
+        {
+          "optID": "P09A5",
+          "opttxt": "9o",
+          "nextqID": "P10"
+        }
+      ]
+    },
+    {
+      "qID": "P10",
+      "qtext": " Ακολουθώ την κατεύθυνση:",
+      "required": "FALSE",
+      "type": "profile",
+      "options": [
+        {
+          "optID": "P10A1",
+          "opttxt": "Ηλεκτρονικής",
+          "nextqID": "P11"
+        },
+        {
+          "optID": "P10A2",
+          "opttxt": "Πληροφορικής",
+          "nextqID": "P11"
+        },
+        {
+          "optID": "P10A3",
+          "opttxt": "Επικοινωνιών",
+          "nextqID": "P11"
+        }
+      ]
+    },
+    {
+      "qID": "P11",
+      "qtext": "Φορές που έχω εξεταστεί στο μάθημα:",
+      "required": "FALSE",
+      "type": "profile",
+      "options": [
+        {
+          "optID": "P11A1",
+          "opttxt": "0",
+          "nextqID": "-"
+        },
+        {
+          "optID": "P11A2",
+          "opttxt": "1",
+          "nextqID": "-"
+        },
+        {
+          "optID": "P11A3",
+          "opttxt": "2",
+          "nextqID": "-"
+        },
+        {
+          "optID": "P11A4",
+          "opttxt": "3",
+          "nextqID": "-"
+        },
+        {
+          "optID": "P11A5",
+          "opttxt": "4",
+          "nextqID": "-"
+        },
+        {
+          "optID": "P11A6",
+          "opttxt": "5",
+          "nextqID": "-"
+        },
+        {
+          "optID": "P11A7",
+          "opttxt": "Είμαι 34ο εξάμηνο",
+          "nextqID": "-"
+        }
+      ]
+    }
+  ]
+}
