@@ -1,0 +1,881 @@
+openapi: 3.0.0
+info:
+    title: api-backend
+    description: An api that manages data and services for the Intelliq project.
+    version: "0.1"
+servers: 
+ - url: https://localhost:9103/intelliq_api
+# X-AUTH authentication
+components:
+  securitySchemes:
+    ApiTokenAuth:
+      type: apiKey
+      in: header
+      name: r X-OBSERVATORY-AUTH
+security:
+  - ApiTokenAuth: []
+paths:
+  /login:
+    post:
+      description: User login
+      parameters:
+      - name: username
+        in: header
+        description: Username
+        schema:
+          type: string
+      - name: password
+        in: header
+        description: User password
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  login:
+                    type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                type: object 
+                properties:
+                  message:
+                    type: string
+  /logout:
+    post:
+      description: User logout
+      responses:
+        '200':
+          description: Success
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /admin/healthcheck:
+    get:
+      description: Check end-to-end connectivity with DB
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+        '401':
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+  /admin/questionnaire_upd:
+    post:
+      description: Upload a questionnaire
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                type: object 
+                properties:
+                  message:
+                    type: string
+  /admin/resetall:
+   post:
+      description: Reset the DB
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                type: object 
+                properties:
+                  message:
+                    type: string
+  /admin/resetq/{questionnaireID}:
+    parameters:
+      - name: questionnaireID
+        required: true
+        in: path
+        description: Id of the questionnaire
+        schema:
+          type: string
+    post:
+      description: Reset a questionnaire
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                type: object 
+                properties:
+                  message:
+                    type: string
+  /admin/usermod/{username}/{password}/{email}:
+    parameters:
+      - name: username
+        required: true
+        in: path
+        description: New username
+        schema:
+          type: string
+      - name: password
+        required: true
+        in: path
+        description: New user password
+        schema:
+          type: string
+      - name: email
+        required: true
+        in: path
+        description: New user email
+        schema:
+          type: string
+    post:
+      description: Create a new user
+      parameters:
+      - name: username
+        in: header
+        description: New username
+        schema:
+          type: string
+      - name: password
+        in: header
+        description: New user password
+        schema:
+          type: string
+      - name: email
+        in: header
+        description: New user email
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                type: object 
+                properties:
+                  message:
+                    type: string
+  /admin/users/{username}:
+    parameters:
+      - name: username
+        required: true
+        in: path
+        description: New username
+        schema:
+          type: string
+    get:
+      description: See info of a user
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  userID:
+                    type: string
+                  username:
+                    type: string
+                  password:
+                    type: string
+                  email:
+                    type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                type: object 
+                properties:
+                  message:
+                    type: string
+  /questionnaire/{questionnaireID}:
+    parameters:
+      - name: questionnaireID
+        required: true
+        in: path
+        description: Id of the questionnaire
+        schema:
+          type: string
+    get:
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  questionnaire_id:
+                    type: string
+                  questionnaireTitle:
+                    type: string
+                  keywords:
+                    type: array
+                    items:
+                      type: string
+                  questions:
+                    type: array
+                    items:
+                      type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                type: object 
+                properties:
+                  message:
+                    type: string
+  /question/{questionnaireID}/{questionID}:
+    parameters:
+      - name: questionnaireID
+        required: true
+        in: path
+        description: Id of the questionnaire
+        schema:
+          type: string
+      - name: questionID
+        required: true
+        in: path
+        description: Id of the question
+        schema:
+          type: string
+    get:
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  questionnaire_id:
+                    type: string
+                  options:
+                    type: array
+                    items:
+                      type: string
+                  qid:
+                    type: string
+                  qtext:
+                    type: string
+                  required:
+                    type: string
+                  type:
+                    type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                type: object 
+                properties:
+                  message:
+                    type: string
+  /doanswer/{questionnaireID}/{questionID}/{session}/{optionID}:
+    parameters:
+      - name: questionnaireID
+        required: true
+        in: path
+        description: Id of the questionnaire
+        schema:
+          type: string
+      - name: questionID
+        required: true
+        in: path
+        description: Id of the question
+        schema:
+          type: string
+      - name: session
+        required: true
+        in: path
+        description: Id of the session
+        schema:
+          type: string
+      - name: optionID
+        required: true
+        in: path
+        description: Id of the option
+        schema:
+          type: string
+    post:
+      description: Answer a question
+      responses:
+        '200':
+          description: Success
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /getsessionanswers/{questionnaireID}/{session}:
+    parameters:
+      - name: questionnaireID
+        required: true
+        in: path
+        description: Id of the questionnaire
+        schema:
+          type: string
+      - name: session
+        required: true
+        in: path
+        description: Id of the session
+        schema:
+          type: string
+    get:
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  questionnaire_id:
+                    type: string
+                  session_id:
+                    type: string
+                  answers:
+                    type: array
+                    items:
+                      type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                type: object 
+                properties:
+                  message:
+                    type: string
+  /getquestionanswers/{questionnaireID}/{questionID}:
+    parameters:
+      - name: questionnaireID
+        required: true
+        in: path
+        description: Id of the questionnaire
+        schema:
+          type: string
+      - name: questionID
+        required: true
+        in: path
+        description: Id of the question
+        schema:
+          type: string
+    get:
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  questionnaire_id:
+                    type: string
+                  question_id:
+                    type: string
+                  answers:
+                    type: array
+                    items:
+                      type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                type: object 
+                properties:
+                  message:
+                    type: string
+  /createsession/{questionnaireID}/{session}:
+    parameters:
+      - name: questionnaireID
+        required: true
+        in: path
+        description: Id of the questionnaire
+        schema:
+          type: string
+      - name: session
+        required: true
+        in: path
+        description: Id of the session
+        schema:
+          type: string
+    post:
+      description: Create a session
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  session:
+                    type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /istheresession/{questionnaireID}:
+    parameters:
+      - name: questionnaireID
+        required: true
+        in: path
+        description: Id of the questionnaire
+        schema:
+          type: string
+    get:
+      description: Check if there is a session
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  session:
+                    type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /getsessions:
+    get:
+      description: Get all sessions
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  sessions:
+                    type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+  /getkeywords/{keyword}:
+    parameters:
+      - name: keyword
+        required: true
+        in: path
+        description: Questionnaire keyword
+        schema:
+          type: string
+    get:
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  keywords:
+                    type: string
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+        '401':
+          description: Not Authorized
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
